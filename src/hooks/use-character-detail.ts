@@ -1,3 +1,5 @@
+'use client';
+
 // Hook para manejar detalle de personaje individual
 import { useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';

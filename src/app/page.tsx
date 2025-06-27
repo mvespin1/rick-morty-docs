@@ -1,103 +1,181 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { ResponsiveCharacterGrid } from '@/components/character/character-grid';
+import { Pagination } from '@/components/common/pagination';
+import { LoadingSpinner, PageLoader } from '@/components/common/loading-spinner';
+import { ErrorMessage, PageError } from '@/components/common/error-message';
+import { useCharacters } from '@/hooks/use-characters';
+import { Sparkles, Users, Zap } from 'lucide-react';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function HomePage() {
+  const router = useRouter();
+  const {
+    characters,
+    isLoading,
+    error,
+    pagination,
+    refresh,
+    isEmpty
+  } = useCharacters();
+
+  // Manejar clic en personaje
+  const handleCharacterClick = (character: any) => {
+    router.push(`/character/${character.id}`);
+  };
+
+  // Manejar cambio de página
+  const handlePageChange = (page: number) => {
+    pagination.goToPage(page);
+  };
+
+  // Manejar retry en caso de error
+  const handleRetry = () => {
+    refresh();
+  };
+
+  // Mostrar error si existe
+  if (error && !isLoading && characters.length === 0) {
+    return (
+      <main className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <PageError 
+            message={error}
+            onRetry={handleRetry}
+          />
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header de la página */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="relative">
+              <Zap className="w-8 h-8 text-green-500" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
+              Rick & Morty
+            </h1>
+          </div>
+          
+          <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
+            Explora el universo de Rick and Morty a través de su API oficial. 
+            Descubre personajes, obtén información detallada y genera descripciones únicas con IA.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span>826+ Personajes</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              <span>IA Generativa</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span>API en Tiempo Real</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Estadísticas rápidas */}
+        {characters.length > 0 && (
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-2xl font-bold text-blue-600">826+</div>
+                <div className="text-sm text-gray-600">Total de Personajes</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-green-600">{pagination.totalPages}</div>
+                <div className="text-sm text-gray-600">Páginas Disponibles</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-purple-600">{characters.length}</div>
+                <div className="text-sm text-gray-600">Mostrando Ahora</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Grid de personajes */}
+        {isLoading && characters.length === 0 ? (
+          <PageLoader text="Cargando personajes del universo..." />
+        ) : (
+          <div className="space-y-8">
+            {/* Indicador de carga para paginación */}
+            {isLoading && characters.length > 0 && (
+              <div className="flex justify-center">
+                <LoadingSpinner text="Cargando más personajes..." />
+              </div>
+            )}
+            
+            {/* Grid responsive */}
+            <ResponsiveCharacterGrid
+              characters={characters}
+              isLoading={isLoading && characters.length === 0}
+              onCharacterClick={handleCharacterClick}
+              columns="auto"
+            />
+
+            {/* Paginación */}
+            {pagination.totalPages > 1 && (
+              <div className="flex justify-center">
+                <Pagination
+                  currentPage={pagination.currentPage}
+                  totalPages={pagination.totalPages}
+                  onPageChange={handlePageChange}
+                  showPageNumbers={true}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Mensaje si no hay personajes */}
+        {isEmpty && !error && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 text-6xl mb-4">🤖</div>
+            <h3 className="text-xl font-medium text-gray-900 mb-2">
+              No hay personajes disponibles
+            </h3>
+            <p className="text-gray-600 mb-4">
+              No se pudieron cargar los personajes en este momento.
+            </p>
+            <button
+              onClick={handleRetry}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+              Intentar nuevamente
+            </button>
+          </div>
+        )}
+
+        {/* Footer informativo */}
+        <div className="mt-16 text-center text-sm text-gray-500">
+          <p>
+            Los datos se obtienen en tiempo real desde la{' '}
+            <a
+              href="https://rickandmortyapi.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Rick and Morty API
+            </a>
+          </p>
+          <p className="mt-2">
+            Haz clic en cualquier personaje para ver más detalles y generar una descripción con IA
+          </p>
+        </div>
+      </div>
+    </main>
   );
 }

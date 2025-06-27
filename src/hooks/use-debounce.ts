@@ -1,3 +1,5 @@
+'use client';
+
 // Hook para debouncing
 import { useState, useEffect } from 'react';
 

@@ -1,3 +1,5 @@
+'use client';
+
 // Hook para manejar lista de personajes
 // Incluye fetch, paginación y filtros 
 import { useEffect, useCallback } from 'react';

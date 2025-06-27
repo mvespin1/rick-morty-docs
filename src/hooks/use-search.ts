@@ -1,3 +1,5 @@
+'use client';
+
 // Hook simplificado para manejar búsquedas
 import { useState, useCallback } from 'react';
 import { useCharacterStore } from '@/store/character-store';

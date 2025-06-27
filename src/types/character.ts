@@ -25,7 +25,7 @@ export interface CharacterAIState extends AIState {
 // Props para componentes de personajes
 export interface CharacterCardProps {
   character: Character;
-  onClick: (character: Character) => void;
+  onClick?: (character: Character) => void;
   showStatus?: boolean;
   className?: string;
 }

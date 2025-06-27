@@ -1,10 +1,12 @@
+'use client';
+
 // Hook para generar descripciones con IA
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useCharacterStore } from '@/store/character-store';
 import { useNotifications } from '@/store/app-store';
 import type { Character } from '@/types/api';
 
-export const useAIDescription = () => {
+export const useAIDescription = (targetCharacterId: number | null) => {
   const {
     description,
     isGenerating,
@@ -25,7 +27,20 @@ export const useAIDescription = () => {
     }
   }, [generateAIDescription, showError, showSuccess, showInfo]);
 
-  // Verificar si ya existe descripción para el personaje
+  // Función simple para generar descripción del personaje actual
+  const generateForCurrent = useCallback(async () => {
+    if (!targetCharacterId) {
+      showError('Error', 'No hay personaje seleccionado');
+      return;
+    }
+    
+    // Necesitamos el objeto character completo, pero como este hook es específico
+    // para un personaje ya cargado, asumimos que el personaje está disponible
+    // Este método será llamado desde el componente que tiene el character object
+    showError('Error', 'Usa generate(character) con el objeto completo');
+  }, [targetCharacterId, showError]);
+
+  // Verificar si ya existe descripción para el personaje target
   const hasDescriptionFor = useCallback((charId: number) => {
     return characterId === charId && !!description;
   }, [characterId, description]);
@@ -38,20 +53,25 @@ export const useAIDescription = () => {
     return null;
   }, [hasDescriptionFor, description]);
 
+  // Determinar si la descripción actual es para el personaje target
+  const currentDescription = targetCharacterId === characterId ? description : null;
+  const isGeneratingForCurrent = targetCharacterId === characterId ? isGenerating : false;
+
   return {
     // Estado
-    description,
-    isGenerating,
-    characterId,
+    description: currentDescription,
+    isGenerating: isGeneratingForCurrent,
+    characterId: targetCharacterId,
     
     // Acciones
     generate,
+    generateForCurrent,
     
     // Helpers
     hasDescriptionFor,
     getDescriptionFor,
     
     // Estado calculado
-    canGenerate: !isGenerating,
+    canGenerate: !isGeneratingForCurrent,
   };
 }; 
