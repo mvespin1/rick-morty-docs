@@ -1,7 +1,6 @@
 'use client';
 
-// Hook para manejar lista de personajes
-// Incluye fetch, paginación y filtros 
+// Hook para manejar lista de personajes con Infinite Scroll
 import { useEffect, useCallback } from 'react';
 import { useCharacterStore } from '@/store/character-store';
 import { useNotifications } from '@/store/app-store';
@@ -12,12 +11,15 @@ export const useCharacters = () => {
     characters,
     currentPage,
     totalPages,
+    hasNextPage,
     isLoading,
     error,
     filters,
     fetchCharacters,
+    loadMoreCharacters,
     searchCharacters,
     setFilters,
+    resetCharacters,
   } = useCharacterStore();
 
   const { showError, showSuccess } = useNotifications();
@@ -36,23 +38,18 @@ export const useCharacters = () => {
     }
   }, [error, showError]);
 
-  // Función para cambiar página
-  const goToPage = useCallback(async (page: number) => {
-    if (page >= 1 && page <= totalPages && page !== currentPage) {
-      try {
-        if (Object.keys(filters).length > 0) {
-          await searchCharacters({ ...filters, page });
-        } else {
-          await fetchCharacters(page);
-        }
-        showSuccess(`Página ${page} cargada`);
-      } catch (err) {
-        showError('Error al cambiar página');
-      }
+  // Función para cargar más personajes (infinite scroll)
+  const loadMore = useCallback(async () => {
+    if (!hasNextPage || isLoading) return;
+    
+    try {
+      await loadMoreCharacters();
+    } catch (err) {
+      showError('Error al cargar más personajes');
     }
-  }, [currentPage, totalPages, filters, searchCharacters, fetchCharacters, showSuccess, showError]);
+  }, [hasNextPage, isLoading, loadMoreCharacters, showError]);
 
-  // Función para aplicar filtros
+  // Función para aplicar filtros (resetea la lista)
   const applyFilters = useCallback(async (newFilters: CharacterFilters) => {
     try {
       setFilters(newFilters);
@@ -67,37 +64,28 @@ export const useCharacters = () => {
     }
   }, [searchCharacters, setFilters, showSuccess, showError]);
 
-  // Función para limpiar filtros
+  // Función para limpiar filtros (resetea la lista)
   const clearFilters = useCallback(async () => {
     try {
+      resetCharacters();
       setFilters({});
       await fetchCharacters(1);
       showSuccess('Filtros eliminados');
     } catch (err) {
       showError('Error al limpiar filtros');
     }
-  }, [fetchCharacters, setFilters, showSuccess, showError]);
+  }, [fetchCharacters, setFilters, resetCharacters, showSuccess, showError]);
 
-  // Función para refrescar
+  // Función para refrescar (resetea la lista)
   const refresh = useCallback(async () => {
     try {
+      resetCharacters();
       await fetchCharacters(1);
       showSuccess('Lista actualizada');
     } catch (err) {
       showError('Error al actualizar');
     }
-  }, [fetchCharacters, showSuccess, showError]);
-
-  // Información de paginación
-  const pagination = {
-    currentPage,
-    totalPages,
-    hasNextPage: currentPage < totalPages,
-    hasPrevPage: currentPage > 1,
-    goToPage,
-    nextPage: () => goToPage(currentPage + 1),
-    prevPage: () => goToPage(currentPage - 1),
-  };
+  }, [fetchCharacters, resetCharacters, showSuccess, showError]);
 
   return {
     // Datos
@@ -106,8 +94,11 @@ export const useCharacters = () => {
     error,
     filters,
     
-    // Paginación
-    pagination,
+    // Infinite Scroll
+    hasNextPage,
+    loadMore,
+    currentPage,
+    totalPages,
     
     // Acciones
     applyFilters,
@@ -117,5 +108,6 @@ export const useCharacters = () => {
     // Estado
     isEmpty: characters.length === 0 && !isLoading,
     hasFilters: Object.keys(filters).length > 0,
+    totalCharacters: characters.length,
   };
 }; 

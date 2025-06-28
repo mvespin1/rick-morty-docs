@@ -153,13 +153,42 @@ export const useCharacterStore = create<CharacterStore>()(
         }
       },
 
-      // Cargar más personajes (paginación)
+      // Cargar más personajes (infinite scroll)
       loadMoreCharacters: async () => {
-        const { currentPage, hasNextPage, isLoading } = get();
+        const { currentPage, hasNextPage, isLoading, filters, characters } = get();
         
         if (!hasNextPage || isLoading) return;
         
-        await get().fetchCharacters(currentPage + 1);
+        const nextPage = currentPage + 1;
+        set({ isLoading: true, error: null });
+        
+        try {
+          let response: ApiResponse<Character>;
+          
+          if (Object.keys(filters).length > 0) {
+            response = await characterApi.searchCharacters({ ...filters, page: nextPage });
+          } else {
+            response = await characterApi.getAllCharacters(nextPage);
+          }
+          
+          // Agregar nuevos personajes a la lista existente
+          set({
+            characters: [...characters, ...response.results],
+            data: [...characters, ...response.results],
+            currentPage: nextPage,
+            totalPages: response.info.pages,
+            totalCount: response.info.count,
+            hasNextPage: !!response.info.next,
+            hasPrevPage: !!response.info.prev,
+            isLoading: false,
+          });
+          
+        } catch (error) {
+          set({
+            error: formatApiError(error),
+            isLoading: false,
+          });
+        }
       },
 
       // Resetear lista de personajes

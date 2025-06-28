@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ResponsiveCharacterGrid } from '@/components/character/character-grid';
 import { CharacterSearch } from '@/components/character/character-search';
-import { Pagination } from '@/components/common/pagination';
 import { LoadingSpinner, PageLoader } from '@/components/common/loading-spinner';
 import { ErrorMessage, PageError } from '@/components/common/error-message';
+import { InfiniteScrollLoader } from '@/components/common/infinite-scroll-loader';
 import { useCharacters } from '@/hooks/use-characters';
 import { useCharacterStore } from '@/store/character-store';
+import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { Sparkles, Users, Zap, Search, X } from 'lucide-react';
 
 export default function HomePage() {
@@ -19,7 +20,11 @@ export default function HomePage() {
     characters,
     isLoading,
     error,
-    pagination,
+    hasNextPage,
+    loadMore,
+    currentPage,
+    totalPages,
+    totalCharacters,
     refresh,
     isEmpty
   } = useCharacters();
@@ -45,10 +50,13 @@ export default function HomePage() {
     router.push(`/character/${character.id}`);
   };
 
-  // Manejar cambio de página
-  const handlePageChange = (page: number) => {
-    pagination.goToPage(page);
-  };
+  // Configurar infinite scroll
+  const { loadingRef } = useInfiniteScroll({
+    hasNextPage,
+    isLoading,
+    loadMore,
+    enabled: !isShowingSearchResults, // Solo activo cuando no hay búsqueda
+  });
 
   // Manejar retry en caso de error
   const handleRetry = () => {
@@ -191,12 +199,12 @@ export default function HomePage() {
                 <div className="text-sm text-gray-600">Total de Personajes</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-green-600">{pagination.totalPages}</div>
+                <div className="text-2xl font-bold text-green-600">{totalPages}</div>
                 <div className="text-sm text-gray-600">Páginas Disponibles</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-purple-600">{displayCharacters.length}</div>
-                <div className="text-sm text-gray-600">Mostrando Ahora</div>
+                <div className="text-2xl font-bold text-purple-600">{totalCharacters}</div>
+                <div className="text-sm text-gray-600">Cargados Hasta Ahora</div>
               </div>
             </div>
           </div>
@@ -207,13 +215,6 @@ export default function HomePage() {
           <PageLoader text={isSearching ? "Buscando personaje..." : "Cargando personajes del universo..."} />
         ) : (
           <div className="space-y-8">
-            {/* Indicador de carga para paginación */}
-            {isLoading && !isShowingSearchResults && displayCharacters.length > 0 && (
-              <div className="flex justify-center">
-                <LoadingSpinner text="Cargando más personajes..." />
-              </div>
-            )}
-            
             {/* Grid responsive */}
             <ResponsiveCharacterGrid
               characters={displayCharacters}
@@ -222,14 +223,14 @@ export default function HomePage() {
               columns="auto"
             />
 
-            {/* Paginación - Solo mostrar si no hay búsqueda activa */}
-            {!isShowingSearchResults && pagination.totalPages > 1 && (
-              <div className="flex justify-center">
-                <Pagination
-                  currentPage={pagination.currentPage}
-                  totalPages={pagination.totalPages}
-                  onPageChange={handlePageChange}
-                  showPageNumbers={true}
+            {/* Infinite Scroll Loader - Solo mostrar si no hay búsqueda activa */}
+            {!isShowingSearchResults && (
+              <div ref={loadingRef}>
+                <InfiniteScrollLoader
+                  isLoading={isLoading}
+                  hasNextPage={hasNextPage}
+                  error={error}
+                  onRetry={loadMore}
                 />
               </div>
             )}
