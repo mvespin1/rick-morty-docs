@@ -73,17 +73,7 @@ export function getGenderText(gender: string): string {
 // Validar ID de personaje
 export function isValidCharacterId(id: string | number): boolean {
   const numId = typeof id === 'string' ? parseInt(id, 10) : id;
-  const isValid = !isNaN(numId) && numId > 0 && numId <= 826; // Máximo de personajes conocido
-  
-  // Debug
-  console.log('🔧 isValidCharacterId - id recibido:', id);
-  console.log('🔧 isValidCharacterId - numId:', numId);
-  console.log('🔧 isValidCharacterId - isNaN(numId):', isNaN(numId));
-  console.log('🔧 isValidCharacterId - numId > 0:', numId > 0);
-  console.log('🔧 isValidCharacterId - numId <= 826:', numId <= 826);
-  console.log('🔧 isValidCharacterId - resultado:', isValid);
-  
-  return isValid;
+  return !isNaN(numId) && numId > 0 && numId <= 826; // Máximo de personajes conocido
 }
 
 // Extraer ID de URL
