@@ -19,28 +19,14 @@ export const useCharacterDetail = (id: number | string) => {
 
   // Convertir ID a número
   const characterId = typeof id === 'string' ? parseInt(id, 10) : id;
-  
-  // Debug
-  console.log('🎯 Hook useCharacterDetail - id recibido:', id);
-  console.log('🎯 Hook useCharacterDetail - characterId:', characterId);
-  console.log('🎯 Hook useCharacterDetail - tipo de id:', typeof id);
 
   // Cargar personaje cuando cambia el ID (sin validación extra)
   useEffect(() => {
     // Solo cargar si no está ya cargado y el ID es válido
     if (!isNaN(characterId) && (!character || character.id !== characterId)) {
-      console.log('🎯 Llamando fetchCharacterById con ID:', characterId);
       fetchCharacterById(characterId);
     }
   }, [characterId, character, fetchCharacterById]);
-
-  // Manejar errores
-  useEffect(() => {
-    if (error) {
-      console.log('🎯 Error en useCharacterDetail:', error);
-      showError('Error al cargar personaje', error);
-    }
-  }, [error, showError]);
 
   // Función para refrescar
   const refresh = useCallback(async () => {

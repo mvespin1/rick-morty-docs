@@ -46,7 +46,7 @@ class GeminiApiService {
    */
   async generateCharacterDescription(character: Character): Promise<string> {
     if (!this.isConfigured()) {
-      throw new Error('API key de Gemini no configurada');
+      throw new Error('API key de Gemini no configurada. Agrega NEXT_PUBLIC_GEMINI_API_KEY a tu archivo .env.local');
     }
 
     const prompt = this.buildCharacterPrompt(character);
@@ -61,6 +61,15 @@ class GeminiApiService {
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('API de Gemini no encontrada. Verifica la URL y API key.');
+        }
+        if (response.status === 403) {
+          throw new Error('API key de Gemini inválida o sin permisos.');
+        }
+        if (response.status === 429) {
+          throw new Error('Límite de rate de API alcanzado. Intenta más tarde.');
+        }
         throw new Error(`Error HTTP: ${response.status}`);
       }
 
@@ -82,7 +91,7 @@ class GeminiApiService {
       console.error('Error generando descripción:', error);
       
       if (error instanceof Error) {
-        throw new Error(`${ERROR_MESSAGES.AI_ERROR} ${error.message}`);
+        throw error; // Re-throw el error original para mejor debugging
       }
       
       throw new Error(ERROR_MESSAGES.AI_ERROR);
@@ -168,9 +177,29 @@ Responde únicamente con el párrafo de 3 líneas, sin introducción ni comentar
     const origin = character.origin.name;
     const episodes = character.episode.length;
 
-    return `${character.name} es un ${species} ${status} originario de ${origin}.
-Este fascinante personaje ha aparecido en ${episodes} episodios de la serie.
-Su historia forma parte del complejo multiverso de Rick and Morty.`;
+    const descriptions = [
+      `${character.name} es un fascinante ${species} ${status} que proviene de ${origin}.`,
+      `Este intrigante personaje ha aparecido en ${episodes} episodios, dejando su marca en el multiverso.`,
+      `Su historia se entrelaza con las aventuras interdimensionales de Rick and Morty de manera única.`
+    ];
+
+    return descriptions.join('\n');
+  }
+
+  /**
+   * Obtener mensaje de configuración para mostrar al usuario
+   */
+  getConfigurationMessage(): string {
+    return `
+Para usar la funcionalidad de IA, necesitas configurar tu API key de Google Gemini:
+
+1. Visita https://ai.google.dev/ y obtén tu API key
+2. Crea un archivo .env.local en la raíz del proyecto
+3. Agrega: NEXT_PUBLIC_GEMINI_API_KEY=tu_api_key_aquí
+4. Reinicia el servidor de desarrollo
+
+Mientras tanto, se mostrará una descripción básica generada automáticamente.
+    `.trim();
   }
 }
 

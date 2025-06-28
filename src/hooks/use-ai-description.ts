@@ -1,9 +1,10 @@
 'use client';
 
 // Hook para generar descripciones con IA
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useCharacterStore } from '@/store/character-store';
 import { useNotifications } from '@/store/app-store';
+import { geminiApi } from '@/services/gemini-api';
 import type { Character } from '@/types/api';
 
 export const useAIDescription = (targetCharacterId: number | null) => {
@@ -14,18 +15,37 @@ export const useAIDescription = (targetCharacterId: number | null) => {
     generateAIDescription,
   } = useCharacterStore();
 
-  const { showError, showSuccess, showInfo } = useNotifications();
+  const { showError, showSuccess, showInfo, showWarning } = useNotifications();
 
   // Función para generar descripción
   const generate = useCallback(async (character: Character) => {
     try {
-      showInfo('Generando descripción...', 'Esto puede tomar unos segundos');
+      // Verificar configuración antes de mostrar loading
+      if (!geminiApi.isConfigured()) {
+        showWarning(
+          'IA no configurada',
+          'Se generará una descripción básica. Para usar IA, configura tu API key de Gemini.'
+        );
+        await generateAIDescription(character);
+        showInfo('Descripción generada', 'Se ha creado una descripción básica del personaje');
+        return;
+      }
+
+      showInfo('Generando descripción con IA...', 'Esto puede tomar unos segundos');
       await generateAIDescription(character);
-      showSuccess('Descripción generada', 'La IA ha creado una descripción única');
+      showSuccess('Descripción generada con IA', 'La IA ha creado una descripción única del personaje');
+      
     } catch (error) {
-      showError('Error al generar descripción', 'Intenta nuevamente más tarde');
+      // Solo mostrar error si no es por falta de configuración
+      if (geminiApi.isConfigured()) {
+        const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+        showError(
+          'Error al generar con IA', 
+          `${errorMessage}. Se ha generado una descripción básica en su lugar.`
+        );
+      }
     }
-  }, [generateAIDescription, showError, showSuccess, showInfo]);
+  }, [generateAIDescription, showError, showSuccess, showInfo, showWarning]);
 
   // Función simple para generar descripción del personaje actual
   const generateForCurrent = useCallback(async () => {
@@ -73,5 +93,6 @@ export const useAIDescription = (targetCharacterId: number | null) => {
     
     // Estado calculado
     canGenerate: !isGeneratingForCurrent,
+    isConfigured: geminiApi.isConfigured(),
   };
 }; 

@@ -288,8 +288,14 @@ export const useCharacterStore = create<CharacterStore>()(
       // Generar descripción con IA
       generateAIDescription: async (character: Character) => {
         if (!geminiApi.isConfigured()) {
-          set({ 
-            error: 'API key de Gemini no configurada. Configura NEXT_PUBLIC_GEMINI_API_KEY en tu archivo .env.local' 
+          // No mostrar error en el store global, solo usar descripción de respaldo
+          const fallbackDescription = geminiApi.generateFallbackDescription(character);
+          set({
+            description: fallbackDescription,
+            isGenerating: false,
+            lastGeneratedId: character.id,
+            characterId: character.id,
+            error: null, // Limpiar cualquier error previo
           });
           return;
         }
@@ -306,19 +312,23 @@ export const useCharacterStore = create<CharacterStore>()(
             description,
             isGenerating: false,
             lastGeneratedId: character.id,
+            error: null,
           });
           
         } catch (error) {
           console.error('Error generando descripción:', error);
           
-          // Usar descripción de respaldo
+          // Usar descripción de respaldo en lugar de mostrar error
           const fallbackDescription = geminiApi.generateFallbackDescription(character);
           set({
             description: fallbackDescription,
             isGenerating: false,
             lastGeneratedId: character.id,
-            error: `Error de IA: ${formatApiError(error)}. Mostrando descripción básica.`,
+            error: null, // No guardar el error en el store global
           });
+          
+          // El error se maneja en el componente UI directamente
+          throw error;
         }
       },
 

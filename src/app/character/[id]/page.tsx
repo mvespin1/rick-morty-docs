@@ -14,10 +14,6 @@ export default function CharacterDetailPage() {
   const params = useParams();
   const router = useRouter();
   
-  // Debug: ver qué está llegando en params
-  console.log('🔍 Debug params:', params);
-  console.log('🔍 Debug params.id:', params.id);
-  
   // Parsing más robusto del ID
   const rawId = params.id;
   let characterId: number;
@@ -29,9 +25,6 @@ export default function CharacterDetailPage() {
   } else {
     characterId = NaN;
   }
-  
-  console.log('🔍 Debug characterId parsed:', characterId);
-  console.log('🔍 Debug characterId isNaN:', isNaN(characterId));
   
   // Si el ID no es válido, redirigir a home
   if (isNaN(characterId) || characterId < 1 || characterId > 826) {
