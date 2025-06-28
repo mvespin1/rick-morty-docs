@@ -37,7 +37,7 @@ export default function HomePage() {
 
   // Mostrar error si existe
   if (error && !isLoading && characters.length === 0) {
-    return (
+  return (
       <main className="min-h-screen bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <PageError 
@@ -164,18 +164,18 @@ export default function HomePage() {
             Los datos se obtienen en tiempo real desde la{' '}
             <a
               href="https://rickandmortyapi.com"
-              target="_blank"
-              rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-700 font-medium"
             >
               Rick and Morty API
-            </a>
+        </a>
           </p>
           <p className="mt-2">
             Haz clic en cualquier personaje para ver más detalles y generar una descripción con IA
           </p>
         </div>
-      </div>
+    </div>
     </main>
   );
 }

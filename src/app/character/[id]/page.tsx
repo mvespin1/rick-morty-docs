@@ -13,7 +13,39 @@ import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 export default function CharacterDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const characterId = parseInt(params.id as string);
+  
+  // Debug: ver qué está llegando en params
+  console.log('🔍 Debug params:', params);
+  console.log('🔍 Debug params.id:', params.id);
+  
+  // Parsing más robusto del ID
+  const rawId = params.id;
+  let characterId: number;
+  
+  if (Array.isArray(rawId)) {
+    characterId = parseInt(rawId[0], 10);
+  } else if (typeof rawId === 'string') {
+    characterId = parseInt(rawId, 10);
+  } else {
+    characterId = NaN;
+  }
+  
+  console.log('🔍 Debug characterId parsed:', characterId);
+  console.log('🔍 Debug characterId isNaN:', isNaN(characterId));
+  
+  // Si el ID no es válido, redirigir a home
+  if (isNaN(characterId) || characterId < 1 || characterId > 826) {
+    return (
+      <main className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <PageError 
+            message="ID de personaje inválido"
+            onRetry={() => router.push('/')}
+          />
+        </div>
+      </main>
+    );
+  }
 
   const {
     character,
