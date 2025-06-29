@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ResponsiveCharacterGrid } from '@/components/character/character-grid';
 import { CharacterSearch } from '@/components/character/character-search';
+import { CharacterModal } from '@/components/character/character-modal';
 import { LoadingSpinner, PageLoader } from '@/components/common/loading-spinner';
 import { ErrorMessage, PageError } from '@/components/common/error-message';
 import { InfiniteScrollLoader } from '@/components/common/infinite-scroll-loader';
 import { useCharacters } from '@/hooks/use-characters';
 import { useCharacterStore } from '@/store/character-store';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
+import { useCharacterModal } from '@/hooks/use-character-modal';
 import { Sparkles, Users, Zap, Search, X } from 'lucide-react';
 
 export default function HomePage() {
@@ -40,14 +42,29 @@ export default function HomePage() {
     clearSearch
   } = useCharacterStore();
 
+  // Configurar modal de personaje
+  const {
+    isOpen: isModalOpen,
+    selectedCharacter: modalCharacter,
+    isLoadingDetail,
+    openModal,
+    closeModal,
+    aiDescription: modalAiDescription,
+    isGeneratingAI: modalIsGeneratingAI,
+    handleGenerateAI: modalHandleGenerateAI,
+    navigateToCharacter,
+    canNavigateNext,
+    canNavigatePrev
+  } = useCharacterModal();
+
   // Determinar qué personajes mostrar
   const displayCharacters = hasSearched && searchResults.length > 0 ? searchResults : characters;
   const isShowingSearchResults = hasSearched && (searchResults.length > 0 || query || selectedId);
   const searchType = selectedId ? 'ID' : query ? 'nombre' : null;
 
-  // Manejar clic en personaje
+  // Manejar clic en personaje - Abrir modal
   const handleCharacterClick = (character: any) => {
-    router.push(`/character/${character.id}`);
+    openModal(character);
   };
 
   // Configurar infinite scroll
@@ -81,6 +98,19 @@ export default function HomePage() {
   const handleClearSearch = () => {
     clearSearch();
     setShowSearch(false);
+  };
+
+  // Funciones de navegación en modal
+  const handleNavigateNext = () => {
+    if (modalCharacter && modalCharacter.id < 826) {
+      navigateToCharacter(modalCharacter.id + 1);
+    }
+  };
+
+  const handleNavigatePrev = () => {
+    if (modalCharacter && modalCharacter.id > 1) {
+      navigateToCharacter(modalCharacter.id - 1);
+    }
   };
 
   // Mostrar error si existe
@@ -273,7 +303,22 @@ export default function HomePage() {
             Haz clic en cualquier personaje para ver más detalles y generar una descripción con IA
           </p>
         </div>
-    </div>
+      </div>
+
+      {/* Modal de detalle de personaje */}
+      <CharacterModal
+        isOpen={isModalOpen}
+        character={modalCharacter}
+        isLoading={isLoadingDetail}
+        aiDescription={modalAiDescription}
+        isGeneratingAI={modalIsGeneratingAI}
+        onClose={closeModal}
+        onGenerateAI={modalHandleGenerateAI}
+        onNavigateNext={handleNavigateNext}
+        onNavigatePrev={handleNavigatePrev}
+        canNavigateNext={canNavigateNext}
+        canNavigatePrev={canNavigatePrev}
+      />
     </main>
   );
 }
