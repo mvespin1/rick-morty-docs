@@ -116,34 +116,34 @@ export function Modal({
       )}
       onClick={closeOnOverlay ? onClose : undefined}
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      {/* Overlay oscuro elegante */}
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md animate-fade-in" />
       
-      {/* Modal */}
+      {/* Modal con tema oscuro */}
       <div
         ref={modalRef}
         className={cn(
-          'relative w-full bg-white rounded-lg shadow-xl',
-          'transform transition-all duration-200 ease-out',
-          'animate-in slide-in-from-bottom-4 zoom-in-95',
+          'relative w-full gradient-card backdrop-blur-lg elegant-border rounded-2xl elegant-shadow-lg',
+          'transform transition-all duration-300 ease-out',
+          'animate-fade-in-scale hover:glow-subtle',
           sizeClasses[size],
-          'max-h-[90vh] overflow-hidden',
+          'max-h-[90vh] overflow-hidden interactive-element',
           className
         )}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
+        {/* Header con tema oscuro */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between p-4 border-b border-border/50 gradient-primary backdrop-blur-sm">
             {title && (
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-bold text-gradient">
                 {title}
               </h2>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-1 text-gray-400 hover:text-gray-600 transition-colors rounded-md hover:bg-gray-100"
+                className="p-2 text-muted-foreground hover:text-white transition-all rounded-lg hover:bg-muted/50 interactive-element glow-subtle"
               >
                 <X className="w-5 h-5" />
               </button>

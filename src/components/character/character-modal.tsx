@@ -3,7 +3,7 @@
 
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Modal } from '../ui/modal';
-import { CharacterDetail } from './character-detail';
+import { CompactCharacterDetail } from './character-detail';
 import { LoadingSpinner } from '../common/loading-spinner';
 import type { Character } from '@/types/api';
 
@@ -40,51 +40,71 @@ export function CharacterModal({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      size="xl"
-      className="relative"
+      size="full"
+      className="relative animate-fade-in-scale hover:glow-primary"
     >
-      {/* Navegación entre personajes */}
+      {/* Navegación entre personajes con efectos mejorados */}
       {(canNavigateNext || canNavigatePrev) && (
-        <div className="absolute top-4 right-16 flex items-center gap-2 z-10">
+        <div className="absolute top-4 right-16 flex items-center gap-3 z-10 animate-fade-in">
           <button
             onClick={onNavigatePrev}
             disabled={!canNavigatePrev || isLoading}
-            className="p-2 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+            className="p-3 text-muted-foreground hover:text-white disabled:opacity-30 disabled:cursor-not-allowed backdrop-dark rounded-full elegant-shadow-lg hover:glow-subtle transition-all duration-300 interactive-element hover:scale-110 group"
             title="Personaje anterior"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
           </button>
           <button
             onClick={onNavigateNext}
             disabled={!canNavigateNext || isLoading}
-            className="p-2 text-gray-400 hover:text-gray-600 disabled:opacity-50 disabled:cursor-not-allowed bg-white rounded-full shadow-md hover:shadow-lg transition-all"
+            className="p-3 text-muted-foreground hover:text-white disabled:opacity-30 disabled:cursor-not-allowed backdrop-dark rounded-full elegant-shadow-lg hover:glow-subtle transition-all duration-300 interactive-element hover:scale-110 group"
             title="Siguiente personaje"
           >
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
           </button>
         </div>
       )}
 
       {/* Contenido */}
-      <div className="p-6">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-12">
-            <LoadingSpinner text="Cargando detalles del personaje..." />
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center py-16 animate-fade-in">
+          <div className="text-center space-y-4">
+            <div className="p-4 gradient-primary rounded-full w-fit mx-auto glow-subtle animate-float">
+              <LoadingSpinner size="lg" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-gradient mb-2">Cargando personaje...</h3>
+              <p className="text-muted-foreground text-sm">Obteniendo detalles del multiverso</p>
+            </div>
           </div>
-        ) : character ? (
-          <CharacterDetail
+        </div>
+      ) : character ? (
+        <div className="animate-fade-in-scale">
+          <CompactCharacterDetail
             character={character}
+            onClose={onClose}
             onGenerateAI={onGenerateAI}
             aiDescription={aiDescription}
             isGeneratingAI={isGeneratingAI}
           />
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-            <div className="text-4xl mb-4">🤖</div>
-            <p>No se pudo cargar el personaje</p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16 text-muted-foreground animate-fade-in">
+          <div className="text-center space-y-4">
+            <div className="text-6xl mb-4 glow-subtle animate-float">🤖</div>
+            <div>
+              <h3 className="text-xl font-bold text-gradient mb-2">¡Ups! Algo salió mal</h3>
+              <p className="text-lg font-medium text-muted-foreground mb-4">No se pudo cargar el personaje</p>
+              <button
+                onClick={onClose}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 interactive-element hover:scale-105 elegant-shadow"
+              >
+                Volver a intentar
+              </button>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </Modal>
   );
-} 
+}

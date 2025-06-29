@@ -29,20 +29,22 @@ export function AIDescription({
   };
 
   return (
-    <div className={cn('bg-white rounded-lg border border-gray-200 overflow-hidden', className)}>
+    <div className={cn('bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden elegant-shadow', className)}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 px-4 py-3 border-b border-gray-200">
+      <div className="bg-gradient-to-r from-primary/5 to-primary/10 px-6 py-4 border-b border-border/50 backdrop-blur-sm">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
-            <h3 className="font-medium text-gray-900">Descripción con IA</h3>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Sparkles className="w-5 h-5 text-primary" />
+            </div>
+            <h3 className="font-semibold text-foreground">Descripción con IA</h3>
           </div>
           
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {description && (
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-700 transition-colors"
+                className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors px-2 py-1 rounded-lg hover:bg-muted/50"
               >
                 {copied ? (
                   <>
@@ -62,10 +64,10 @@ export function AIDescription({
               onClick={onGenerate}
               disabled={isGenerating}
               className={cn(
-                'flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-md transition-colors',
+                'flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200',
                 isGenerating
-                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-purple-600 text-white hover:bg-purple-700'
+                  ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                  : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105 shadow-sm'
               )}
             >
               {isGenerating ? (
@@ -85,44 +87,48 @@ export function AIDescription({
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-6">
         {isGenerating ? (
-          <div className="flex items-center justify-center py-8">
+          <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <RefreshCw className="w-8 h-8 text-purple-600 animate-spin mx-auto mb-3" />
-              <p className="text-gray-600">
+              <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
+                <RefreshCw className="w-8 h-8 text-primary animate-spin" />
+              </div>
+              <p className="text-foreground font-medium mb-2">
                 Generando descripción inteligente para <strong>{character.name}</strong>...
               </p>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-muted-foreground">
                 Esto puede tomar unos segundos
               </p>
             </div>
           </div>
         ) : description ? (
-          <div className="space-y-3">
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4 border border-purple-100">
-              <p className="text-gray-800 leading-relaxed">
+          <div className="space-y-4">
+            <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl p-5 border border-primary/20 backdrop-blur-sm">
+              <p className="text-foreground leading-relaxed">
                 {description}
               </p>
             </div>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Sparkles className="w-3 h-3" />
               <span>Generado por IA • Powered by Google Gemini</span>
             </div>
           </div>
         ) : (
-          <div className="text-center py-8">
-            <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <h4 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="text-center py-12">
+            <div className="p-4 bg-muted/30 rounded-full w-fit mx-auto mb-4">
+              <Sparkles className="w-12 h-12 text-muted-foreground" />
+            </div>
+            <h4 className="text-lg font-semibold text-foreground mb-2">
               Descripción inteligente
             </h4>
-            <p className="text-gray-600 mb-4 max-w-md mx-auto">
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Genera una descripción única y personalizada de <strong>{character.name}</strong> usando 
               inteligencia artificial.
             </p>
             <button
               onClick={onGenerate}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors mx-auto"
+              className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 hover:scale-105 shadow-sm mx-auto"
             >
               <Sparkles className="w-4 h-4" />
               Generar con IA
@@ -143,27 +149,27 @@ export function CompactAIDescription({
   className
 }: AIDescriptionProps & { className?: string }) {
   return (
-    <div className={cn('bg-purple-50 rounded-lg p-3 border border-purple-200', className)}>
+    <div className={cn('bg-primary/5 backdrop-blur-sm rounded-xl p-4 border border-primary/20', className)}>
       <div className="flex items-start gap-3">
-        <Sparkles className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+        <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
         <div className="flex-1 min-w-0">
           {isGenerating ? (
             <div className="flex items-center gap-2">
-              <RefreshCw className="w-3 h-3 text-purple-600 animate-spin" />
-              <span className="text-sm text-purple-700">Generando...</span>
+              <RefreshCw className="w-3 h-3 text-primary animate-spin" />
+              <span className="text-sm text-primary font-medium">Generando...</span>
             </div>
           ) : description ? (
-            <p className="text-sm text-purple-800 leading-relaxed">
+            <p className="text-sm text-foreground leading-relaxed">
               {description}
             </p>
           ) : (
             <div>
-              <p className="text-sm text-purple-700 mb-2">
+              <p className="text-sm text-foreground mb-2">
                 Generar descripción IA para {character.name}
               </p>
               <button
                 onClick={onGenerate}
-                className="text-xs text-purple-600 hover:text-purple-700 font-medium"
+                className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
               >
                 Generar →
               </button>
@@ -184,13 +190,13 @@ export function AIDescriptionPlaceholder({
   className?: string;
 }) {
   return (
-    <div className={cn('bg-gray-50 rounded-lg p-4 border border-gray-200', className)}>
+    <div className={cn('bg-muted/30 backdrop-blur-sm rounded-xl p-4 border border-border/50', className)}>
       <div className="text-center">
-        <Sparkles className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-        <p className="text-sm text-gray-600">
+        <Sparkles className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+        <p className="text-sm text-foreground mb-1">
           Descripción IA no disponible para {character.name}
         </p>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-muted-foreground">
           Configura la API key de Gemini para habilitar esta funcionalidad
         </p>
       </div>

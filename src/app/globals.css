@@ -6,8 +6,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -43,73 +43,95 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
+/* Tema oscuro elegante basado en #000000 */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.13 0.028 261.692);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.13 0.028 261.692);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.13 0.028 261.692);
-  --primary: oklch(0.21 0.034 264.665);
-  --primary-foreground: oklch(0.985 0.002 247.839);
-  --secondary: oklch(0.967 0.003 264.542);
-  --secondary-foreground: oklch(0.21 0.034 264.665);
-  --muted: oklch(0.967 0.003 264.542);
-  --muted-foreground: oklch(0.551 0.027 264.364);
-  --accent: oklch(0.967 0.003 264.542);
-  --accent-foreground: oklch(0.21 0.034 264.665);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.928 0.006 264.531);
-  --input: oklch(0.928 0.006 264.531);
-  --ring: oklch(0.707 0.022 261.325);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.002 247.839);
-  --sidebar-foreground: oklch(0.13 0.028 261.692);
-  --sidebar-primary: oklch(0.21 0.034 264.665);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.967 0.003 264.542);
-  --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
-  --sidebar-border: oklch(0.928 0.006 264.531);
-  --sidebar-ring: oklch(0.707 0.022 261.325);
+  --radius: 0.75rem;
+  
+  /* Fondos - Escalas de negro */
+  --background: hsl(0 0% 0%);              /* #000000 - Negro puro */
+  --card: hsl(0 0% 3%);                    /* #080808 - Negro muy oscuro */
+  --popover: hsl(0 0% 2%);                 /* #050505 - Negro casi puro */
+  
+  /* Textos - Escalas de blanco */
+  --foreground: hsl(0 0% 98%);             /* #FAFAFA - Blanco muy suave */
+  --card-foreground: hsl(0 0% 95%);        /* #F2F2F2 - Blanco suave */
+  --popover-foreground: hsl(0 0% 98%);     /* #FAFAFA - Blanco muy suave */
+  
+  /* Primarios - Grises elegantes */
+  --primary: hsl(0 0% 15%);                /* #262626 - Gris oscuro */
+  --primary-foreground: hsl(0 0% 98%);     /* #FAFAFA - Blanco muy suave */
+  
+  /* Secundarios */
+  --secondary: hsl(0 0% 8%);               /* #141414 - Gris muy oscuro */
+  --secondary-foreground: hsl(0 0% 90%);   /* #E6E6E6 - Gris claro */
+  
+  /* Muteds - Para texto secundario */
+  --muted: hsl(0 0% 10%);                  /* #1A1A1A - Gris oscuro */
+  --muted-foreground: hsl(0 0% 65%);       /* #A6A6A6 - Gris medio */
+  
+  /* Accents */
+  --accent: hsl(0 0% 12%);                 /* #1F1F1F - Gris oscuro */
+  --accent-foreground: hsl(0 0% 95%);      /* #F2F2F2 - Blanco suave */
+  
+  /* Bordes */
+  --border: hsl(0 0% 15%);                 /* #262626 - Gris oscuro */
+  --input: hsl(0 0% 8%);                   /* #141414 - Gris muy oscuro */
+  --ring: hsl(0 0% 85%);                   /* #D9D9D9 - Gris claro */
+  
+  /* Destructive */
+  --destructive: hsl(0 62.8% 30.6%);       /* Rojo oscuro */
+  
+  /* Charts - Colores vibrantes para contraste */
+  --chart-1: hsl(220 70% 60%);            /* Azul vibrante */
+  --chart-2: hsl(160 60% 55%);            /* Verde vibrante */
+  --chart-3: hsl(30 80% 65%);             /* Naranja vibrante */
+  --chart-4: hsl(280 65% 70%);            /* Púrpura vibrante */
+  --chart-5: hsl(340 75% 65%);            /* Rosa vibrante */
+  
+  /* Sidebar */
+  --sidebar: hsl(0 0% 2%);                 /* #050505 - Negro casi puro */
+  --sidebar-foreground: hsl(0 0% 90%);     /* #E6E6E6 - Gris claro */
+  --sidebar-primary: hsl(0 0% 15%);        /* #262626 - Gris oscuro */
+  --sidebar-primary-foreground: hsl(0 0% 95%); /* #F2F2F2 - Blanco suave */
+  --sidebar-accent: hsl(0 0% 8%);          /* #141414 - Gris muy oscuro */
+  --sidebar-accent-foreground: hsl(0 0% 90%); /* #E6E6E6 - Gris claro */
+  --sidebar-border: hsl(0 0% 12%);         /* #1F1F1F - Gris oscuro */
+  --sidebar-ring: hsl(0 0% 75%);           /* #BFBFBF - Gris claro */
 }
 
+/* Mantener configuración dark para compatibilidad */
 .dark {
-  --background: oklch(0.13 0.028 261.692);
-  --foreground: oklch(0.985 0.002 247.839);
-  --card: oklch(0.21 0.034 264.665);
-  --card-foreground: oklch(0.985 0.002 247.839);
-  --popover: oklch(0.21 0.034 264.665);
-  --popover-foreground: oklch(0.985 0.002 247.839);
-  --primary: oklch(0.928 0.006 264.531);
-  --primary-foreground: oklch(0.21 0.034 264.665);
-  --secondary: oklch(0.278 0.033 256.848);
-  --secondary-foreground: oklch(0.985 0.002 247.839);
-  --muted: oklch(0.278 0.033 256.848);
-  --muted-foreground: oklch(0.707 0.022 261.325);
-  --accent: oklch(0.278 0.033 256.848);
-  --accent-foreground: oklch(0.985 0.002 247.839);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.034 264.665);
-  --sidebar-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-accent: oklch(0.278 0.033 256.848);
-  --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: hsl(0 0% 0%);              
+  --foreground: hsl(0 0% 98%);             
+  --card: hsl(0 0% 3%);                    
+  --card-foreground: hsl(0 0% 95%);        
+  --popover: hsl(0 0% 2%);                 
+  --popover-foreground: hsl(0 0% 98%);     
+  --primary: hsl(0 0% 15%);                
+  --primary-foreground: hsl(0 0% 98%);     
+  --secondary: hsl(0 0% 8%);               
+  --secondary-foreground: hsl(0 0% 90%);   
+  --muted: hsl(0 0% 10%);                  
+  --muted-foreground: hsl(0 0% 65%);       
+  --accent: hsl(0 0% 12%);                 
+  --accent-foreground: hsl(0 0% 95%);      
+  --destructive: hsl(0 62.8% 30.6%);       
+  --border: hsl(0 0% 15%);                 
+  --input: hsl(0 0% 8%);                   
+  --ring: hsl(0 0% 85%);                   
+  --chart-1: hsl(220 70% 60%);            
+  --chart-2: hsl(160 60% 55%);            
+  --chart-3: hsl(30 80% 65%);             
+  --chart-4: hsl(280 65% 70%);            
+  --chart-5: hsl(340 75% 65%);            
+  --sidebar: hsl(0 0% 2%);                 
+  --sidebar-foreground: hsl(0 0% 90%);     
+  --sidebar-primary: hsl(0 0% 15%);        
+  --sidebar-primary-foreground: hsl(0 0% 95%);
+  --sidebar-accent: hsl(0 0% 8%);          
+  --sidebar-accent-foreground: hsl(0 0% 90%);
+  --sidebar-border: hsl(0 0% 12%);         
+  --sidebar-ring: hsl(0 0% 75%);           
 }
 
 @layer base {
@@ -117,6 +139,251 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+    font-optical-sizing: auto;
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+    font-optical-sizing: auto;
+  }
+  
+  h1 {
+    @apply text-4xl lg:text-5xl font-black;
+    letter-spacing: -0.025em;
+  }
+  
+  h2 {
+    @apply text-3xl lg:text-4xl font-bold;
+    letter-spacing: -0.02em;
+  }
+  
+  h3 {
+    @apply text-2xl lg:text-3xl font-bold;
+    letter-spacing: -0.015em;
+  }
+  
+  /* Clases para diferentes pesos de Poppins */
+  .font-light { font-weight: 300; }
+  .font-normal { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  .font-extrabold { font-weight: 800; }
+  .font-black { font-weight: 900; }
+}
+
+/* Animaciones personalizadas */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.3s ease-out;
+}
+
+.animate-slide-in-up {
+  animation: slide-in-up 0.4s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Efectos de hover elegantes */
+.hover-lift {
+  @apply transition-all duration-300 ease-out;
+}
+
+.hover-lift:hover {
+  @apply -translate-y-1 shadow-lg;
+}
+
+/* Efectos para el layout innovador */
+.masonry-item {
+  @apply break-inside-avoid mb-4;
+  animation: slide-in-up 0.6s ease-out;
+}
+
+.masonry-item:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.masonry-item:nth-child(even) {
+  animation-delay: 0.2s;
+}
+
+.masonry-item:hover {
+  @apply scale-105 rotate-1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efectos de brillo */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  transition: left 0.6s ease-in-out;
+}
+
+.shimmer:hover::before {
+  left: 100%;
+}
+
+/* Estilos para gradientes sutiles - Tema oscuro */
+.gradient-subtle {
+  background: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 3%) 100%);
+}
+
+.dark .gradient-subtle {
+  background: linear-gradient(135deg, hsl(0 0% 0%) 0%, hsl(0 0% 3%) 100%);
+}
+
+/* Gradientes especiales para elementos destacados */
+.gradient-primary {
+  background: linear-gradient(135deg, hsl(0 0% 8%) 0%, hsl(0 0% 15%) 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, hsl(0 0% 2%) 0%, hsl(0 0% 5%) 100%);
+}
+
+/* Bordes y sombras elegantes - Tema oscuro */
+.elegant-border {
+  @apply border border-border/60 bg-card/50 backdrop-blur-sm;
+  box-shadow: inset 0 1px 0 0 hsl(0 0% 100% / 0.05);
+}
+
+.elegant-shadow {
+  box-shadow: 
+    0 1px 3px 0 rgb(0 0 0 / 0.3), 
+    0 1px 2px -1px rgb(0 0 0 / 0.3),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.05);
+}
+
+.elegant-shadow-lg {
+  box-shadow: 
+    0 10px 15px -3px rgb(0 0 0 / 0.4), 
+    0 4px 6px -4px rgb(0 0 0 / 0.4),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.05);
+}
+
+/* Efectos de glow sutil */
+.glow-subtle {
+  box-shadow: 0 0 20px 0 hsl(0 0% 100% / 0.05);
+}
+
+.glow-primary {
+  box-shadow: 0 0 25px 0 hsl(0 0% 15% / 0.8);
+}
+
+/* Backdrop especial para elementos flotantes */
+.backdrop-dark {
+  backdrop-filter: blur(8px) saturate(120%);
+  background: hsl(0 0% 0% / 0.8);
+  border: 1px solid hsl(0 0% 100% / 0.08);
+}
+
+/* Texto con efecto gradiente */
+.text-gradient {
+  background: linear-gradient(135deg, hsl(0 0% 98%) 0%, hsl(0 0% 75%) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Selección de texto personalizada */
+::selection {
+  background-color: hsl(0 0% 25%);
+  color: hsl(0 0% 98%);
+}
+
+/* Scrollbar personalizada para tema oscuro */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0 0% 5%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 20%);
+  border-radius: 4px;
+  border: 1px solid hsl(0 0% 10%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(0 0% 30%);
+}
+
+/* Efectos para elementos interactivos */
+.interactive-element {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-element:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 12px 0 rgb(0 0 0 / 0.4),
+    inset 0 1px 0 0 hsl(0 0% 100% / 0.1);
 }

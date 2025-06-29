@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ResponsiveCharacterGrid } from '@/components/character/character-grid';
-import { CharacterSearch } from '@/components/character/character-search';
-import { CharacterModal } from '@/components/character/character-modal';
-import { LoadingSpinner, PageLoader } from '@/components/common/loading-spinner';
-import { ErrorMessage, PageError } from '@/components/common/error-message';
-import { InfiniteScrollLoader } from '@/components/common/infinite-scroll-loader';
-import { useCharacters } from '@/hooks/use-characters';
-import { useCharacterStore } from '@/store/character-store';
-import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
-import { useCharacterModal } from '@/hooks/use-character-modal';
-import { Sparkles, Users, Zap, Search, X } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { ResponsiveCharacterGrid } from "@/components/character/character-grid";
+import { CharacterSearch } from "@/components/character/character-search";
+import { CharacterModal } from "@/components/character/character-modal";
+import {
+  LoadingSpinner,
+  PageLoader,
+} from "@/components/common/loading-spinner";
+import { ErrorMessage, PageError } from "@/components/common/error-message";
+import { InfiniteScrollLoader } from "@/components/common/infinite-scroll-loader";
+import { useCharacters } from "@/hooks/use-characters";
+import { useCharacterStore } from "@/store/character-store";
+import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
+import { useCharacterModal } from "@/hooks/use-character-modal";
+import { Search, ArrowRight, Sparkles, Code, Database } from "lucide-react";
 
 export default function HomePage() {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
-  
+
   const {
     characters,
     isLoading,
@@ -28,10 +31,10 @@ export default function HomePage() {
     totalPages,
     totalCharacters,
     refresh,
-    isEmpty
+    isEmpty,
   } = useCharacters();
 
-  const { 
+  const {
     results: searchResults,
     isSearching,
     selectedId,
@@ -39,7 +42,7 @@ export default function HomePage() {
     hasSearched,
     searchByName,
     searchById,
-    clearSearch
+    clearSearch,
   } = useCharacterStore();
 
   // Configurar modal de personaje
@@ -54,13 +57,15 @@ export default function HomePage() {
     handleGenerateAI: modalHandleGenerateAI,
     navigateToCharacter,
     canNavigateNext,
-    canNavigatePrev
+    canNavigatePrev,
   } = useCharacterModal();
 
   // Determinar qué personajes mostrar
-  const displayCharacters = hasSearched && searchResults.length > 0 ? searchResults : characters;
-  const isShowingSearchResults = hasSearched && (searchResults.length > 0 || query || selectedId);
-  const searchType = selectedId ? 'ID' : query ? 'nombre' : null;
+  const displayCharacters =
+    hasSearched && searchResults.length > 0 ? searchResults : characters;
+  const isShowingSearchResults =
+    hasSearched && (searchResults.length > 0 || query || selectedId);
+  const searchType = selectedId ? "ID" : query ? "nombre" : null;
 
   // Manejar clic en personaje - Abrir modal
   const handleCharacterClick = (character: any) => {
@@ -72,7 +77,7 @@ export default function HomePage() {
     hasNextPage,
     isLoading,
     loadMore,
-    enabled: !isShowingSearchResults, // Solo activo cuando no hay búsqueda
+    enabled: !isShowingSearchResults,
   });
 
   // Manejar retry en caso de error
@@ -90,7 +95,7 @@ export default function HomePage() {
     try {
       await searchByName(query);
     } catch (error) {
-      console.error('Error en búsqueda por nombre:', error);
+      console.error("Error en búsqueda por nombre:", error);
     }
   };
 
@@ -115,204 +120,181 @@ export default function HomePage() {
 
   // Mostrar error si existe
   if (error && !isLoading && characters.length === 0) {
-  return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <PageError 
-            message={error}
-            onRetry={handleRetry}
-          />
+    return (
+      <main className="min-h-screen bg-background pt-20 relative">
+        {/* Background Global */}
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-25">
+            <img
+              src="/rick-morty-hero.jpg"
+              alt="Rick and Morty"
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+        </div>
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <PageError message={error} onRetry={handleRetry} />
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header de la página */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="relative">
-              <Zap className="w-8 h-8 text-green-500" />
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full animate-pulse" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-              Rick & Morty
-            </h1>
-          </div>
-          
-          <p className="text-xl text-gray-600 mb-6 max-w-2xl mx-auto">
-            Explora el universo de Rick and Morty a través de su API oficial. 
-            Descubre personajes, obtén información detallada y genera descripciones únicas con IA.
-          </p>
+    <main className="min-h-screen bg-background pt-20 relative">
+      {/* Background Global - Imagen de fondo fija */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-25">
+          <img
+            src="/rick-morty-hero.jpg"
+            alt="Rick and Morty"
+            className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+      </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 mb-6">
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              <span>826+ Personajes</span>
+      {/* Hero Section */}
+      <section className="relative z-10 overflow-hidden">
+        <div className="relative">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+            <div className="text-center space-y-6">
+              {/* Logo y título principal */}
+              <div className="space-y-3">
+                {/* Logo de Rick & Morty */}
+                <div className="flex justify-center mb-6">
+                  <div className="w-60 h-30 sm:w-72 sm:h-36 lg:w-80 lg:h-40 backdrop-dark rounded-3xl p-4 elegant-shadow-lg hover:glow-primary transition-all duration-300 hover:scale-105 animate-fade-in-scale group">
+                    <img
+                      src="/rick-morty-logo.svg"
+                      alt="Rick & Morty Logo"
+                      className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  onClick={() => setShowSearch(!showSearch)}
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-primary-foreground bg-primary hover:bg-primary/90 transition-all duration-200 hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <Search className="mr-2 h-4 w-4" />
+                  Explorar Personajes
+                </button>
+                <a
+                  href="https://rickandmortyapi.com/documentation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-border text-sm font-medium rounded-lg text-foreground bg-background/50 backdrop-blur-sm hover:bg-accent transition-all duration-200 hover:scale-105"
+                >
+                  Ver Documentación
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </a>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
-              <span>IA Generativa</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span>API en Tiempo Real</span>
-            </div>
-          </div>
-
-          {/* Toggle de búsqueda */}
-          <div className="flex justify-center">
-            <button
-              onClick={() => setShowSearch(!showSearch)}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Search className="w-4 h-4" />
-              {showSearch ? 'Ocultar búsqueda' : 'Buscar personaje'}
-            </button>
           </div>
         </div>
+      </section>
 
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Componente de búsqueda */}
         {showSearch && (
-          <div className="mb-8">
+          <div className="mb-8 animate-fade-in">
             <div className="max-w-2xl mx-auto">
-              <CharacterSearch
-                onSearch={handleSearch}
-                onSearchById={handleSearchById}
-                isSearching={isSearching}
-                placeholder="Buscar por nombre o ID..."
-              />
+              <div className="bg-card/80 backdrop-blur-md border border-border/50 rounded-lg p-4 elegant-shadow">
+                <CharacterSearch
+                  onSearch={handleSearch}
+                  onSearchById={handleSearchById}
+                  isSearching={isSearching}
+                  placeholder="Buscar por nombre o ID..."
+                />
+              </div>
             </div>
           </div>
         )}
 
         {/* Indicador de resultado de búsqueda */}
         {isShowingSearchResults && (
-          <div className="mb-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
+          <div className="mb-6 animate-fade-in">
+            <div className="bg-muted/80 backdrop-blur-md border border-border/50 rounded-lg p-3 max-w-2xl mx-auto">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Search className="w-4 h-4 text-blue-600" />
-                  <span className="text-blue-700 font-medium">
-                    {searchResults.length > 0 ? (
-                      `Encontrados ${searchResults.length} resultado(s) para "${searchType === 'ID' ? selectedId : query}"`
-                    ) : (
-                      `Sin resultados para "${searchType === 'ID' ? selectedId : query}"`
-                    )}
+                  <Search className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">
+                    {searchResults.length > 0
+                      ? `${searchResults.length} resultado(s) para "${
+                          searchType === "ID" ? selectedId : query
+                        }"`
+                      : `Sin resultados para "${
+                          searchType === "ID" ? selectedId : query
+                        }"`}
                   </span>
                 </div>
                 <button
                   onClick={handleClearSearch}
-                  className="flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <X className="w-3 h-3" />
-                  <span>Limpiar</span>
+                  Limpiar búsqueda
                 </button>
-              </div>
-              {searchResults.length === 0 && hasSearched && !isSearching && (
-                <p className="text-blue-600 text-sm mt-2">
-                  Intenta con otro {searchType === 'ID' ? 'ID' : 'nombre'} o revisa la escritura.
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Estadísticas rápidas */}
-        {displayCharacters.length > 0 && !isShowingSearchResults && (
-          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-              <div>
-                <div className="text-2xl font-bold text-blue-600">826+</div>
-                <div className="text-sm text-gray-600">Total de Personajes</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-green-600">{totalPages}</div>
-                <div className="text-sm text-gray-600">Páginas Disponibles</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-purple-600">{totalCharacters}</div>
-                <div className="text-sm text-gray-600">Cargados Hasta Ahora</div>
               </div>
             </div>
           </div>
         )}
 
         {/* Grid de personajes */}
-        {(isLoading || isSearching) && displayCharacters.length === 0 ? (
-          <PageLoader text={isSearching ? "Buscando personaje..." : "Cargando personajes del universo..."} />
-        ) : (
-          <div className="space-y-8">
-            {/* Grid responsive */}
-            <ResponsiveCharacterGrid
-              characters={displayCharacters}
-              isLoading={(isLoading || isSearching) && displayCharacters.length === 0}
-              onCharacterClick={handleCharacterClick}
-              columns="auto"
-            />
-
-            {/* Infinite Scroll Loader - Solo mostrar si no hay búsqueda activa */}
-            {!isShowingSearchResults && (
-              <div ref={loadingRef}>
-                <InfiniteScrollLoader
-                  isLoading={isLoading}
-                  hasNextPage={hasNextPage}
-                  error={error}
-                  onRetry={loadMore}
-                />
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Mensaje si no hay personajes */}
-        {isEmpty && !error && !isShowingSearchResults && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 text-6xl mb-4">🤖</div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">
-              No hay personajes disponibles
-            </h3>
-            <p className="text-gray-600 mb-4">
-              No se pudieron cargar los personajes en este momento.
-            </p>
-            <button
-              onClick={handleRetry}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Intentar nuevamente
-            </button>
-          </div>
-        )}
-
-        {/* Footer informativo */}
-        <div className="mt-16 text-center text-sm text-gray-500">
-          <p>
-            Los datos se obtienen en tiempo real desde la{' '}
-            <a
-              href="https://rickandmortyapi.com"
-          target="_blank"
-          rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Rick and Morty API
-        </a>
-          </p>
-          <p className="mt-2">
-            Haz clic en cualquier personaje para ver más detalles y generar una descripción con IA
-          </p>
+        <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          <ResponsiveCharacterGrid
+            characters={displayCharacters}
+            isLoading={isLoading && characters.length === 0}
+            onCharacterClick={handleCharacterClick}
+            className="mb-8"
+            variant="innovative"
+          />
         </div>
+
+        {/* Infinite scroll loader */}
+        {hasNextPage && !isShowingSearchResults && (
+          <div ref={loadingRef} className="flex justify-center py-6">
+            <InfiniteScrollLoader
+              isLoading={isLoading}
+              hasNextPage={hasNextPage}
+            />
+          </div>
+        )}
+
+        {/* Empty state para búsqueda */}
+        {isShowingSearchResults &&
+          searchResults.length === 0 &&
+          !isSearching && (
+            <div className="text-center py-12">
+              <div className="mx-auto h-20 w-20 rounded-full bg-muted/80 backdrop-blur-sm flex items-center justify-center mb-4">
+                <Search className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Sin resultados</h3>
+              <p className="text-muted-foreground mb-4 max-w-sm mx-auto">
+                No encontramos personajes que coincidan con tu búsqueda. Intenta
+                con otros términos.
+              </p>
+              <button
+                onClick={handleClearSearch}
+                className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-accent transition-colors"
+              >
+                Ver todos los personajes
+              </button>
+            </div>
+          )}
       </div>
 
-      {/* Modal de detalle de personaje */}
+      {/* Modal de personaje */}
       <CharacterModal
         isOpen={isModalOpen}
         character={modalCharacter}
+        onClose={closeModal}
         isLoading={isLoadingDetail}
         aiDescription={modalAiDescription}
         isGeneratingAI={modalIsGeneratingAI}
-        onClose={closeModal}
         onGenerateAI={modalHandleGenerateAI}
         onNavigateNext={handleNavigateNext}
         onNavigatePrev={handleNavigatePrev}

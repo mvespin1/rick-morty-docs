@@ -29,8 +29,20 @@ export default function CharacterDetailPage() {
   // Si el ID no es válido, redirigir a home
   if (isNaN(characterId) || characterId < 1 || characterId > 826) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="min-h-screen bg-background pt-20 relative">
+        {/* Background Global */}
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-25">
+            <img
+              src="/rick-morty-hero.jpg"
+              alt="Rick and Morty"
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+        </div>
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <PageError 
             message="ID de personaje inválido"
             onRetry={() => router.push('/')}
@@ -81,8 +93,20 @@ export default function CharacterDetailPage() {
   // Estados de carga y error
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="min-h-screen bg-background pt-20 relative">
+        {/* Background Global */}
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-25">
+            <img
+              src="/rick-morty-hero.jpg"
+              alt="Rick and Morty"
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+        </div>
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <PageLoader text="Cargando información del personaje..." />
         </div>
       </main>
@@ -91,8 +115,20 @@ export default function CharacterDetailPage() {
 
   if (error || !character) {
     return (
-      <main className="min-h-screen bg-gray-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="min-h-screen bg-background pt-20 relative">
+        {/* Background Global */}
+        <div className="fixed inset-0 z-0">
+          <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-25">
+            <img
+              src="/rick-morty-hero.jpg"
+              alt="Rick and Morty"
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+        </div>
+        <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <PageError 
             message={error || 'Personaje no encontrado'}
             onRetry={() => router.push('/')}
@@ -103,15 +139,28 @@ export default function CharacterDetailPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main className="min-h-screen bg-background pt-20 relative">
+      {/* Background Global - Imagen de fondo fija */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-25">
+          <img
+            src="/rick-morty-hero.jpg"
+            alt="Rick and Morty"
+            className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navegación superior */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           {/* Breadcrumb y botón back */}
           <div className="flex items-center gap-4">
             <button
               onClick={handleGoBack}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-white rounded-md transition-colors border border-gray-200"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-card/50 rounded-lg transition-all duration-200 border border-border/50 backdrop-blur-sm hover:scale-105"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Regresar</span>
@@ -129,20 +178,20 @@ export default function CharacterDetailPage() {
             <button
               onClick={handlePrevious}
               disabled={!navigation.canGoPrev}
-              className="flex items-center gap-1 px-3 py-2 text-sm border border-gray-200 rounded-md hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 px-4 py-2 text-sm border border-border/50 rounded-lg hover:bg-card/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm hover:scale-105"
             >
               <ChevronLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Anterior</span>
             </button>
             
-            <span className="px-3 py-2 text-sm text-gray-500 bg-white border border-gray-200 rounded-md">
+            <span className="px-4 py-2 text-sm text-muted-foreground bg-card/50 border border-border/50 rounded-lg backdrop-blur-sm font-mono">
               {character.id} / 826
             </span>
             
             <button
               onClick={handleNext}
               disabled={!navigation.canGoNext}
-              className="flex items-center gap-1 px-3 py-2 text-sm border border-gray-200 rounded-md hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-1 px-4 py-2 text-sm border border-border/50 rounded-lg hover:bg-card/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm hover:scale-105"
             >
               <span className="hidden sm:inline">Siguiente</span>
               <ChevronRight className="w-4 h-4" />
@@ -159,16 +208,16 @@ export default function CharacterDetailPage() {
         />
 
         {/* Enlaces de navegación inferior */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="mt-12 pt-8 border-t border-border/50">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-muted-foreground">
               ¿Quieres explorar más personajes?
             </div>
             
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.push('/')}
-                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-white rounded-md transition-colors border border-gray-200"
+                className="px-6 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-card/50 rounded-lg transition-all duration-200 border border-border/50 backdrop-blur-sm hover:scale-105"
               >
                 Ver todos los personajes
               </button>
@@ -176,7 +225,7 @@ export default function CharacterDetailPage() {
               {navigation.canGoNext && (
                 <button
                   onClick={handleNext}
-                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-6 py-2 text-sm bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-200 hover:scale-105 shadow-sm"
                 >
                   Siguiente personaje →
                 </button>

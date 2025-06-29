@@ -1,162 +1,122 @@
+'use client';
+
 import Link from 'next/link';
-import { Heart, ExternalLink, Code, Zap } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Github, ExternalLink, Heart, Code, Database } from 'lucide-react';
 
-interface FooterProps {
-  className?: string;
-}
+export function Footer() {
+  const currentYear = new Date().getFullYear();
 
-export function Footer({ className }: FooterProps) {
   return (
-    <footer className={cn(
-      'border-t border-gray-200 bg-gray-50/50 backdrop-blur-sm',
-      className
-    )}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Información principal */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-green-500" />
-              <span className="font-semibold text-gray-900">Rick & Morty API Docs</span>
+    <footer className="border-t bg-background/50 backdrop-blur-sm">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Content */}
+        <div className="py-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Brand Section */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center w-8 h-8 bg-primary text-primary-foreground rounded-lg">
+                  <span className="text-sm font-bold">R&M</span>
+                </div>
+                <span className="font-semibold text-foreground">Rick & Morty API</span>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
+                Documentación interactiva para explorar el multiverso de Rick and Morty 
+                con potencia de IA generativa.
+              </p>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span>API en vivo</span>
+                </div>
+              </div>
             </div>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Documentación interactiva de la API de Rick and Morty con integración 
-              de IA generativa para descripciones de personajes.
-            </p>
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <span>Hecho con</span>
-              <Heart className="w-4 h-4 text-red-500" />
-              <span>para Kushki</span>
-            </div>
-          </div>
 
-          {/* Enlaces útiles */}
-          <div className="space-y-4">
-            <h3 className="font-medium text-gray-900">Recursos</h3>
-            <ul className="space-y-2">
-              <li>
+            {/* API Resources */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-foreground">Recursos API</h3>
+              <div className="space-y-3 text-sm">
                 <Link
                   href="https://rickandmortyapi.com/documentation"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <ExternalLink className="w-3 h-3" />
-                  Documentación oficial
+                  <ExternalLink className="w-4 h-4" />
+                  Documentación Oficial
                 </Link>
-              </li>
-              <li>
+                <Link
+                  href="https://rickandmortyapi.com/api/character"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <Database className="w-4 h-4" />
+                  Endpoint de Personajes
+                </Link>
                 <Link
                   href="https://github.com/afuh/rick-and-morty-api"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  <Code className="w-3 h-3" />
-                  Código fuente API
+                  <Github className="w-4 h-4" />
+                  Código Fuente API
                 </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://ai.google.dev/gemini-api"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  <ExternalLink className="w-3 h-3" />
-                  Google Gemini API
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="https://nextjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
-                >
-                  <ExternalLink className="w-3 h-3" />
-                  Next.js
-                </Link>
-              </li>
-            </ul>
-          </div>
+              </div>
+            </div>
 
-          {/* Información técnica */}
-          <div className="space-y-4">
-            <h3 className="font-medium text-gray-900">Tecnologías</h3>
-            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                <span>Next.js 15</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-600 rounded-full" />
-                <span>TypeScript</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-cyan-500 rounded-full" />
-                <span>Tailwind CSS</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                <span>Zustand</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full" />
-                <span>Gemini AI</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full" />
-                <span>Axios</span>
+            {/* Project Info */}
+            <div className="space-y-4">
+              <h3 className="font-semibold text-foreground">Acerca del Proyecto</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Code className="w-4 h-4" />
+                  <span>Next.js 14 + TypeScript</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <Heart className="w-4 h-4" />
+                  <span>Con IA de Google Gemini</span>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Proyecto de demostración construido para mostrar integración 
+                  de APIs REST con funcionalidades de IA generativa.
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Línea divisoria y copyright */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-gray-500">
-              © 2024 Rick & Morty API Docs. Prueba técnica para Kushki.
+        {/* Bottom Footer */}
+        <div className="border-t py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+            <div className="flex items-center gap-4">
+              <span>© {currentYear} Rick & Morty API Docs</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="text-xs">
+                Datos proporcionados por{' '}
+                <Link
+                  href="https://rickandmortyapi.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-foreground transition-colors underline"
+                >
+                  Rick and Morty API
+                </Link>
+              </span>
             </div>
             
-            <div className="flex items-center gap-4 text-sm text-gray-500">
-              <span>API Status:</span>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-green-600 font-medium">Operativo</span>
-              </div>
+            <div className="flex items-center gap-4">
+              <Link
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="w-4 h-4" />
+              </Link>
             </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-// Footer compacto para páginas internas
-export function CompactFooter({ className }: { className?: string }) {
-  return (
-    <footer className={cn(
-      'border-t border-gray-200 bg-white',
-      className
-    )}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
-          <div className="text-sm text-gray-500">
-            © 2024 Rick & Morty API Docs
-          </div>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span>Powered by</span>
-            <Link
-              href="https://rickandmortyapi.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium hover:text-blue-600 transition-colors"
-            >
-              Rick and Morty API
-            </Link>
           </div>
         </div>
       </div>
