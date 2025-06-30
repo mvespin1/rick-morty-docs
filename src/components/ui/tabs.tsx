@@ -32,7 +32,7 @@ export function Tabs({ tabs, defaultTab, onChange, children, className }: TabsPr
 
   return (
     <div className={cn('w-full h-full flex flex-col', className)}>
-      {/* Tab Headers - Diseño minimalista y elegante */}
+      {/* Tab Headers */}
       <div className="flex bg-muted/5 backdrop-blur-sm">
         {tabs.map((tab) => (
           <button
@@ -47,7 +47,7 @@ export function Tabs({ tabs, defaultTab, onChange, children, className }: TabsPr
           >
             {tab.icon}
             {tab.label}
-            {/* Indicador activo sutil */}
+            {/* Indicador */}
             {activeTab === tab.id && (
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-primary rounded-full" />
             )}

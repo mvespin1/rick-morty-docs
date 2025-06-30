@@ -40,7 +40,7 @@ export function CharacterDetail({
 
   return (
     <div className={cn('max-w-4xl mx-auto space-y-6', className)}>
-      {/* Header con imagen y datos principales */}
+      {/* Header */}
       <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden elegant-shadow">
         <div className="md:flex">
           {/* Imagen */}
@@ -242,10 +242,9 @@ export function CompactCharacterDetail({
         )}
       </div>
 
-      {/* Content principal - Layout ultra optimizado */}
+      {/* Content principal */}
       <div className="p-3 h-[calc(80vh-45px)] overflow-hidden">
         <div className="grid grid-cols-12 gap-3 h-full">
-          {/* Columna 1: Imagen y datos básicos (4/12) - SIN SCROLL */}
           <div className="col-span-12 lg:col-span-4 space-y-2 overflow-hidden">
             <div className="w-full max-w-[180px] mx-auto lg:mx-0">
               <img
@@ -255,7 +254,6 @@ export function CompactCharacterDetail({
               />
             </div>
             
-            {/* Status badges ultra compactos */}
             <div className="flex flex-wrap gap-1 justify-center lg:justify-start">
               <span
                 className={cn(
@@ -270,7 +268,6 @@ export function CompactCharacterDetail({
               </span>
             </div>
 
-            {/* Información básica en grid ultra compacto */}
             <div className="grid grid-cols-1 gap-1.5">
               <div className="p-1.5 rounded-md gradient-card backdrop-blur-sm elegant-border">
                 <div className="text-xs text-muted-foreground uppercase tracking-wide mb-0.5">Género</div>
@@ -312,7 +309,6 @@ export function CompactCharacterDetail({
             </div>
           </div>
 
-          {/* Columna 2: Tabs con IA y API (8/12) */}
           <div className="col-span-12 lg:col-span-8 h-full">
             <div className="gradient-card backdrop-blur-sm elegant-border rounded-lg overflow-hidden h-full">
               <Tabs 
