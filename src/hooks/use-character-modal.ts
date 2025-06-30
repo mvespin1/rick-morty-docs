@@ -33,13 +33,13 @@ export const useCharacterModal = () => {
       try {
         const fullCharacter = await fetchCharacterById(character.id);
         setSelectedCharacter(fullCharacter || character);
-      } catch (error) {
-        showError('Error al cargar detalles del personaje');
+      } catch (_) {
+        // Error manejado por el store
       } finally {
         setIsLoadingDetail(false);
       }
     }
-  }, [fetchCharacterById, showError]);
+  }, [fetchCharacterById]);
 
   // Cerrar modal
   const closeModal = useCallback(() => {
@@ -56,9 +56,8 @@ export const useCharacterModal = () => {
     try {
       await generateAIDescription(selectedCharacter);
       showSuccess('Descripción generada con IA');
-    } catch (error) {
-      // El error ya se maneja en el store con fallback
-      console.log('Usando descripción de respaldo');
+    } catch (_) {
+      // Error manejado por el store
     }
   }, [selectedCharacter, generateAIDescription, showSuccess]);
 
@@ -72,7 +71,7 @@ export const useCharacterModal = () => {
       if (character) {
         setSelectedCharacter(character);
       }
-    } catch (error) {
+    } catch (_) {
       showError(`Error al cargar personaje ${id}`);
     } finally {
       setIsLoadingDetail(false);

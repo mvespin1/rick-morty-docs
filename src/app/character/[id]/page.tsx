@@ -1,43 +1,53 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { CharacterDetail } from '@/components/character/character-detail';
-import { CharacterNavigation } from '@/components/layout/navigation';
 import { PageLoader } from '@/components/common/loading-spinner';
 import { PageError } from '@/components/common/error-message';
 import { useCharacterDetail } from '@/hooks/use-character-detail';
 import { useAIDescription } from '@/hooks/use-ai-description';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
-export default function CharacterDetailPage() {
-  const params = useParams();
+export default function CharacterDetailPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> | { id: string }
+}) {
   const router = useRouter();
   
-  // Parsing más robusto del ID
-  const rawId = params.id;
-  let characterId: number;
-  
-  if (Array.isArray(rawId)) {
-    characterId = parseInt(rawId[0], 10);
-  } else if (typeof rawId === 'string') {
-    characterId = parseInt(rawId, 10);
-  } else {
-    characterId = NaN;
-  }
-  
-  // Si el ID no es válido, redirigir a home
-  if (isNaN(characterId) || characterId < 1 || characterId > 826) {
+  // Resolver params si es una Promise (Next.js 15)
+  const resolvedParams = params instanceof Promise ? { id: '' } : params;
+  const characterId = parseInt(resolvedParams.id);
+
+  // Hooks SIEMPRE se llaman primero, sin condiciones
+  const {
+    character,
+    isLoading,
+    error,
+    navigation
+  } = useCharacterDetail(characterId);
+
+  const {
+    description,
+    isGenerating,
+    generate
+  } = useAIDescription(character?.id || null);
+
+  // Validar ID después de los hooks
+  if (isNaN(characterId) || characterId < 1) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
-        {/* Background Global */}
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <img
+            <Image
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+              priority={false}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -51,20 +61,6 @@ export default function CharacterDetailPage() {
       </main>
     );
   }
-
-  const {
-    character,
-    isLoading,
-    error,
-    refresh,
-    navigation
-  } = useCharacterDetail(characterId);
-
-  const {
-    description,
-    isGenerating,
-    generate
-  } = useAIDescription(character?.id || null);
 
   // Manejar navegación
   const handleGoBack = () => {
@@ -94,14 +90,16 @@ export default function CharacterDetailPage() {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
-        {/* Background Global */}
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <img
+            <Image
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+              priority={false}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -116,14 +114,16 @@ export default function CharacterDetailPage() {
   if (error || !character) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
-        {/* Background Global */}
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <img
+            <Image
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
+              width={1920}
+              height={1080}
               className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+              priority={false}
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -140,23 +140,23 @@ export default function CharacterDetailPage() {
 
   return (
     <main className="min-h-screen bg-background pt-20 relative">
-      {/* Background Global - Imagen de fondo fija */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
         <div className="absolute inset-0 flex items-center justify-center opacity-25">
-          <img
+          <Image
             src="/rick-morty-hero.jpg"
             alt="Rick and Morty"
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
+            priority={false}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
       </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navegación superior */}
         <div className="flex items-center justify-between mb-8">
-          {/* Breadcrumb y botón back */}
           <div className="flex items-center gap-4">
             <button
               onClick={handleGoBack}
@@ -166,14 +166,11 @@ export default function CharacterDetailPage() {
               <span className="hidden sm:inline">Regresar</span>
             </button>
 
-            <CharacterNavigation
-              characterName={character.name}
-              characterId={character.id}
-              showBackButton={false}
-            />
+            <div className="text-sm text-muted-foreground">
+              <span className="text-foreground font-medium">{character.name}</span> - Personaje #{character.id}
+            </div>
           </div>
 
-          {/* Navegación entre personajes */}
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrevious}
@@ -199,7 +196,6 @@ export default function CharacterDetailPage() {
           </div>
         </div>
 
-        {/* Contenido principal */}
         <CharacterDetail
           character={character}
           onGenerateAI={handleGenerateAI}
@@ -207,7 +203,6 @@ export default function CharacterDetailPage() {
           isGeneratingAI={isGenerating}
         />
 
-        {/* Enlaces de navegación inferior */}
         <div className="mt-12 pt-8 border-t border-border/50">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-sm text-muted-foreground">

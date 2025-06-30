@@ -33,7 +33,7 @@ export const useCharacterDetail = (id: number | string) => {
     try {
       await fetchCharacterById(characterId);
       showSuccess('Personaje actualizado');
-    } catch (err) {
+    } catch (_) {
       showError('Error al actualizar personaje');
     }
   }, [characterId, fetchCharacterById, showSuccess, showError]);

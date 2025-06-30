@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 interface TryItOutProps {
   title?: string;
   requestUrl: string;
-  responseData: any;
+  responseData: Record<string, unknown>;
   isLoading?: boolean;
   className?: string;
 }
@@ -134,7 +134,7 @@ export function JsonViewer({
   maxHeight = 'max-h-64',
   className
 }: {
-  data: any;
+  data: Record<string, unknown>;
   title?: string;
   maxHeight?: string;
   className?: string;

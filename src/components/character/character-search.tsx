@@ -15,7 +15,6 @@ export function CharacterSearch({
   onSearch,
   onSearchById,
   isSearching = false,
-  placeholder = "Buscar personaje...",
   className
 }: CharacterSearchProps) {
   const [query, setQuery] = useState('');

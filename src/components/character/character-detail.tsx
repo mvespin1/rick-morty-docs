@@ -153,7 +153,7 @@ export function CharacterDetail({
       <TryItOut
         title="API Request"
         requestUrl={requestUrl}
-        responseData={character}
+        responseData={character as unknown as Record<string, unknown>}
       />
     </div>
   );

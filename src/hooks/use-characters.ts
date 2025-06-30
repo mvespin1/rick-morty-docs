@@ -82,7 +82,7 @@ export const useCharacters = () => {
       resetCharacters();
       await fetchCharacters(1);
       showSuccess('Lista actualizada');
-    } catch (err) {
+    } catch (_) {
       showError('Error al actualizar');
     }
   }, [fetchCharacters, resetCharacters, showSuccess, showError]);
