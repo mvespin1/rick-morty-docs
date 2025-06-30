@@ -120,7 +120,7 @@ export default function HomePage() {
 
   // Mostrar error si existe
   if (error && !isLoading && characters.length === 0) {
-    return (
+  return (
       <main className="min-h-screen bg-background pt-20 relative">
         {/* Background Global */}
         <div className="fixed inset-0 z-0">
@@ -185,8 +185,8 @@ export default function HomePage() {
                 </button>
                 <a
                   href="https://rickandmortyapi.com/documentation"
-                  target="_blank"
-                  rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 border border-border text-sm font-medium rounded-lg text-foreground bg-background/50 backdrop-blur-sm hover:bg-accent transition-all duration-200 hover:scale-105"
                 >
                   Ver Documentación
@@ -285,7 +285,7 @@ export default function HomePage() {
               </button>
             </div>
           )}
-      </div>
+    </div>
 
       {/* Modal de personaje */}
       <CharacterModal
