@@ -212,7 +212,7 @@ export function CompactCharacterDetail({
   ];
 
   return (
-    <div className={cn('gradient-card backdrop-blur-md elegant-border rounded-2xl overflow-hidden elegant-shadow-lg max-w-6xl w-full max-h-[80vh]', className)}>
+    <div className={cn('gradient-card backdrop-blur-md elegant-border rounded-2xl overflow-hidden elegant-shadow-lg max-w-6xl w-full max-h-[90vh] md:max-h-[80vh]', className)}>
       {/* Header compacto */}
       <div className="flex items-center justify-between px-3 py-2 border-b border-border/50 gradient-primary backdrop-blur-sm shrink-0">
         <div className="flex items-center gap-2">
@@ -243,9 +243,9 @@ export function CompactCharacterDetail({
       </div>
 
       {/* Content principal */}
-      <div className="p-3 h-[calc(80vh-45px)] overflow-hidden">
-        <div className="grid grid-cols-12 gap-3 h-full">
-          <div className="col-span-12 lg:col-span-4 space-y-2 overflow-hidden">
+      <div className="p-3 overflow-y-auto max-h-[calc(90vh-60px)] md:max-h-[calc(80vh-60px)]">
+        <div className="grid grid-cols-12 gap-3 min-h-0">
+          <div className="col-span-12 lg:col-span-4 space-y-2">
             <div className="w-full max-w-[180px] mx-auto lg:mx-0">
               <img
                 src={character.image}
@@ -309,21 +309,21 @@ export function CompactCharacterDetail({
             </div>
           </div>
 
-          <div className="col-span-12 lg:col-span-8 h-full">
-            <div className="gradient-card backdrop-blur-sm elegant-border rounded-lg overflow-hidden h-full">
+          <div className="col-span-12 lg:col-span-8 min-h-[300px] lg:h-full">
+            <div className="gradient-card backdrop-blur-sm elegant-border rounded-lg overflow-hidden min-h-[300px] lg:h-full">
               <Tabs 
                 tabs={tabs} 
                 defaultTab="ai" 
                 onChange={setActiveTab}
-                className="h-full"
+                className="min-h-[300px] lg:h-full"
               >
                 {/* Tab Panel: Descripción IA */}
-                <TabPanel tabId="ai" activeTab={activeTab} className="h-full">
+                <TabPanel tabId="ai" activeTab={activeTab} className="min-h-[250px]">
                   {onGenerateAI && (
-                    <div className="h-full flex flex-col">
+                    <div className="flex flex-col min-h-[250px]">
                       <div className="flex-1 p-3 overflow-y-auto">
                         {isGeneratingAI ? (
-                          <div className="flex items-center justify-center h-full">
+                          <div className="flex items-center justify-center min-h-[200px]">
                             <div className="text-center">
                               <div className="p-2 bg-primary/10 rounded-full w-fit mx-auto mb-2 glow-subtle">
                                 <RefreshCw className="w-5 h-5 text-primary animate-spin" />
@@ -337,7 +337,7 @@ export function CompactCharacterDetail({
                             </div>
                           </div>
                         ) : aiDescription ? (
-                          <div className="space-y-3 h-full">
+                          <div className="space-y-3">
                             <div className="bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg p-3 elegant-border backdrop-blur-sm">
                               <p className="text-foreground leading-relaxed text-sm">
                                 {aiDescription}
@@ -359,7 +359,7 @@ export function CompactCharacterDetail({
                             </div>
                           </div>
                         ) : (
-                          <div className="text-center h-full flex items-center justify-center">
+                          <div className="text-center min-h-[200px] flex items-center justify-center">
                             <div>
                               <div className="p-2 gradient-primary rounded-full w-fit mx-auto mb-2 glow-subtle">
                                 <Sparkles className="w-6 h-6 text-muted-foreground" />
@@ -386,8 +386,8 @@ export function CompactCharacterDetail({
                 </TabPanel>
 
                 {/* Tab Panel: API Request */}
-                <TabPanel tabId="api" activeTab={activeTab} className="h-full">
-                  <div className="h-full flex flex-col">
+                <TabPanel tabId="api" activeTab={activeTab} className="min-h-[250px]">
+                  <div className="flex flex-col min-h-[250px]">
                     <div className="flex-1 p-3 overflow-y-auto">
                       <div className="space-y-2.5">
                         {/* URL */}
