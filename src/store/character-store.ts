@@ -29,7 +29,7 @@ interface CharacterStore extends
   resetCharacters: () => void;
   
   // Acciones para detalle de personaje
-  fetchCharacterById: (id: number) => Promise<void>;
+  fetchCharacterById: (id: number) => Promise<Character | null>;
   clearCharacterDetail: () => void;
   
   // Acciones para búsqueda
@@ -207,7 +207,7 @@ export const useCharacterStore = create<CharacterStore>()(
       },
 
       // Obtener personaje por ID
-      fetchCharacterById: async (id: number) => {
+      fetchCharacterById: async (id: number): Promise<Character | null> => {
         set({ isLoading: true, error: null, character: null });
         
         try {
@@ -217,12 +217,16 @@ export const useCharacterStore = create<CharacterStore>()(
             isLoading: false,
           });
           
+          return character;
+          
         } catch (error) {
           set({
             error: formatApiError(error),
             isLoading: false,
             character: null,
           });
+          
+          return null;
         }
       },
 
@@ -316,19 +320,6 @@ export const useCharacterStore = create<CharacterStore>()(
 
       // Generar descripción con IA
       generateAIDescription: async (character: Character) => {
-        if (!geminiApi.isConfigured()) {
-          // No mostrar error en el store global, solo usar descripción de respaldo
-          const fallbackDescription = geminiApi.generateFallbackDescription(character);
-          set({
-            description: fallbackDescription,
-            isGenerating: false,
-            lastGeneratedId: character.id,
-            characterId: character.id,
-            error: null, // Limpiar cualquier error previo
-          });
-          return;
-        }
-        
         set({ 
           isGenerating: true, 
           error: null, 
@@ -336,6 +327,7 @@ export const useCharacterStore = create<CharacterStore>()(
         });
         
         try {
+          // El servicio ahora maneja automáticamente fallbacks sin lanzar errores
           const description = await geminiApi.generateCharacterDescription(character);
           set({
             description,
@@ -345,19 +337,15 @@ export const useCharacterStore = create<CharacterStore>()(
           });
           
         } catch (error) {
-          console.error('Error generando descripción:', error);
+          console.warn('Error generando descripción con IA, el servicio no está disponible');
           
-          // Usar descripción de respaldo en lugar de mostrar error
-          const fallbackDescription = geminiApi.generateFallbackDescription(character);
+          // Si el servicio falla completamente, mostrar mensaje de configuración
           set({
-            description: fallbackDescription,
+            description: `🤖 Servicio de IA no disponible. ${geminiApi.getConfigurationMessage()}`,
             isGenerating: false,
-            lastGeneratedId: character.id,
-            error: null, // No guardar el error en el store global
+            lastGeneratedId: character.id, 
+            error: null,
           });
-          
-          // El error se maneja en el componente UI directamente
-          throw error;
         }
       },
 

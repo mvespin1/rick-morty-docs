@@ -15,37 +15,27 @@ export const useAIDescription = (targetCharacterId: number | null) => {
     generateAIDescription,
   } = useCharacterStore();
 
-  const { showError, showSuccess, showInfo, showWarning } = useNotifications();
+  const { showError, showSuccess, showInfo } = useNotifications();
 
   // Función para generar descripción
   const generate = useCallback(async (character: Character) => {
     try {
-      // Verificar configuración antes de mostrar loading
-      if (!geminiApi.isConfigured()) {
-        showWarning(
-          'IA no configurada',
-          'Se generará una descripción básica. Para usar IA, configura tu API key de Gemini.'
-        );
-        await generateAIDescription(character);
-        showInfo('Descripción generada', 'Se ha creado una descripción básica del personaje');
-        return;
-      }
-
       showInfo('Generando descripción con IA...', 'Esto puede tomar unos segundos');
       await generateAIDescription(character);
-      showSuccess('Descripción generada con IA', 'La IA ha creado una descripción única del personaje');
+      
+      // Siempre mostrar éxito ya que el servicio maneja fallbacks automáticamente
+      if (geminiApi.isConfigured()) {
+        showSuccess('Descripción generada con IA', 'La IA ha creado una descripción única del personaje');
+      } else {
+        showInfo('Descripción generada', 'Se ha creado una descripción creativa del personaje');
+      }
       
     } catch (error) {
-      // Solo mostrar error si no es por falta de configuración
-      if (geminiApi.isConfigured()) {
-        const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
-        showError(
-          'Error al generar con IA', 
-          `${errorMessage}. Se ha generado una descripción básica en su lugar.`
-        );
-      }
+      // Esto solo ocurriría en casos extremos
+      console.error('Error crítico:', error);
+      showError('Error inesperado', 'Ocurrió un problema inesperado. Por favor, intenta nuevamente.');
     }
-  }, [generateAIDescription, showError, showSuccess, showInfo, showWarning]);
+  }, [generateAIDescription, showError, showSuccess, showInfo]);
 
   // Función simple para generar descripción del personaje actual
   const generateForCurrent = useCallback(async () => {

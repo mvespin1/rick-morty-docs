@@ -13,7 +13,6 @@ export const useCharacterModal = () => {
 
   const { 
     fetchCharacterById,
-    character: storeCharacter,
     generateAIDescription,
     description,
     isGenerating,
@@ -32,16 +31,15 @@ export const useCharacterModal = () => {
     if (!character.episode || character.episode.length === 0) {
       setIsLoadingDetail(true);
       try {
-        await fetchCharacterById(character.id);
-        // Después del fetch, el character estará en storeCharacter
-        setSelectedCharacter(storeCharacter || character);
+        const fullCharacter = await fetchCharacterById(character.id);
+        setSelectedCharacter(fullCharacter || character);
       } catch (error) {
         showError('Error al cargar detalles del personaje');
       } finally {
         setIsLoadingDetail(false);
       }
     }
-  }, [fetchCharacterById, storeCharacter, showError]);
+  }, [fetchCharacterById, showError]);
 
   // Cerrar modal
   const closeModal = useCallback(() => {
@@ -70,17 +68,16 @@ export const useCharacterModal = () => {
 
     setIsLoadingDetail(true);
     try {
-      await fetchCharacterById(id);
-      // Usar el character del store después del fetch
-      if (storeCharacter && storeCharacter.id === id) {
-        setSelectedCharacter(storeCharacter);
+      const character = await fetchCharacterById(id);
+      if (character) {
+        setSelectedCharacter(character);
       }
     } catch (error) {
       showError(`Error al cargar personaje ${id}`);
     } finally {
       setIsLoadingDetail(false);
     }
-  }, [selectedCharacter?.id, fetchCharacterById, storeCharacter, showError]);
+  }, [selectedCharacter?.id, fetchCharacterById, showError]);
 
   return {
     // Estado del modal
