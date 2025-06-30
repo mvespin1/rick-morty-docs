@@ -53,7 +53,7 @@ class CharacterApiService {
    */
   async searchCharacters(filters: CharacterFilters): Promise<ApiResponse<Character>> {
     const cleanFilters = this.cleanFilters(filters);
-    return apiClient.get<ApiResponse<Character>>(this.endpoint, cleanFilters);
+    return apiClient.get<ApiResponse<Character>>(this.endpoint, cleanFilters as Record<string, unknown>);
   }
 
   /**

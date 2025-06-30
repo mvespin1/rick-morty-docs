@@ -180,8 +180,8 @@ export default function HomePage() {
                 </button>
                 <a
                   href="https://rickandmortyapi.com/documentation"
-                  target="_blank"
-                  rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-6 py-3 border border-border text-sm font-medium rounded-lg text-foreground bg-background/50 backdrop-blur-sm hover:bg-accent transition-all duration-200 hover:scale-105"
                 >
                   Ver Documentación
@@ -202,7 +202,7 @@ export default function HomePage() {
                   onSearch={handleSearch}
                   onSearchById={handleSearchById}
                   isSearching={isSearching}
-                />
+          />
               </div>
             </div>
           </div>
@@ -274,7 +274,7 @@ export default function HomePage() {
               </button>
             </div>
           )}
-      </div>
+    </div>
 
       <CharacterModal
         isOpen={isModalOpen}
