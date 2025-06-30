@@ -1,20 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ResponsiveCharacterGrid } from "@/components/character/character-grid";
 import { CharacterSearch } from "@/components/character/character-search";
 import { CharacterModal } from "@/components/character/character-modal";
-import { PageError } from "@/components/common/error-message";
+import {
+  LoadingSpinner,
+  PageLoader,
+} from "@/components/common/loading-spinner";
+import { ErrorMessage, PageError } from "@/components/common/error-message";
 import { InfiniteScrollLoader } from "@/components/common/infinite-scroll-loader";
 import { useCharacters } from "@/hooks/use-characters";
 import { useCharacterStore } from "@/store/character-store";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { useCharacterModal } from "@/hooks/use-character-modal";
-import { Search, ArrowRight } from "lucide-react";
-import type { Character } from "@/types/api";
+import { Search, ArrowRight, Sparkles, Code, Database } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
 
   const {
@@ -23,7 +27,11 @@ export default function HomePage() {
     error,
     hasNextPage,
     loadMore,
+    currentPage,
+    totalPages,
+    totalCharacters,
     refresh,
+    isEmpty,
   } = useCharacters();
 
   const {
@@ -57,9 +65,10 @@ export default function HomePage() {
     hasSearched && searchResults.length > 0 ? searchResults : characters;
   const isShowingSearchResults =
     hasSearched && (searchResults.length > 0 || query || selectedId);
+  const searchType = selectedId ? "ID" : query ? "nombre" : null;
 
   // Manejar clic en personaje - Abrir modal
-  const handleCharacterClick = (character: Character) => {
+  const handleCharacterClick = (character: any) => {
     openModal(character);
   };
 
@@ -117,12 +126,10 @@ export default function HomePage() {
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <Image
+            <img
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
-              fill
-              className="object-cover object-center scale-110 blur-[0.5px]"
-              priority
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -140,12 +147,10 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
         <div className="absolute inset-0 flex items-center justify-center opacity-25">
-          <Image
+          <img
             src="/rick-morty-hero.jpg"
             alt="Rick and Morty"
-            fill
-            className="object-cover object-center scale-110 blur-[0.5px]"
-            priority
+            className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -161,13 +166,10 @@ export default function HomePage() {
                 {/* Logo de Rick & Morty */}
                 <div className="flex justify-center mb-6">
                   <div className="w-60 h-30 sm:w-72 sm:h-36 lg:w-80 lg:h-40 backdrop-dark rounded-3xl p-4 elegant-shadow-lg hover:glow-primary transition-all duration-300 hover:scale-105 animate-fade-in-scale group">
-                    <Image
+                    <img
                       src="/rick-morty-logo.svg"
                       alt="Rick & Morty Logo"
-                      width={320}
-                      height={160}
                       className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-lg"
-                      priority
                     />
                   </div>
                 </div>
@@ -196,46 +198,101 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Search Section */}
-      {showSearch && (
-        <section className="relative z-10 py-8 border-b border-border/50 backdrop-blur-sm">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <CharacterSearch
-              onSearchById={handleSearchById}
-              onSearch={handleSearch}
-              isSearching={isSearching}
-            />
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Componente de búsqueda */}
+        {showSearch && (
+          <div className="mb-8 animate-fade-in">
+            <div className="max-w-2xl mx-auto">
+              <div className="bg-card/80 backdrop-blur-md border border-border/50 rounded-lg p-4 elegant-shadow">
+                <CharacterSearch
+                  onSearch={handleSearch}
+                  onSearchById={handleSearchById}
+                  isSearching={isSearching}
+                  placeholder="Buscar por nombre o ID..."
+                />
+              </div>
+            </div>
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Characters Grid Section */}
-      <section className="relative z-10 py-8">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Indicador de resultado de búsqueda */}
+        {isShowingSearchResults && (
+          <div className="mb-6 animate-fade-in">
+            <div className="bg-muted/80 backdrop-blur-md border border-border/50 rounded-lg p-3 max-w-2xl mx-auto">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Search className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm font-medium">
+                    {searchResults.length > 0
+                      ? `${searchResults.length} resultado(s) para "${
+                          searchType === "ID" ? selectedId : query
+                        }"`
+                      : `Sin resultados para "${
+                          searchType === "ID" ? selectedId : query
+                        }"`}
+                  </span>
+                </div>
+                <button
+                  onClick={handleClearSearch}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Limpiar búsqueda
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Grid de personajes */}
+        <div className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
           <ResponsiveCharacterGrid
             characters={displayCharacters}
-            isLoading={isLoading}
+            isLoading={isLoading && characters.length === 0}
             onCharacterClick={handleCharacterClick}
+            className="mb-8"
+            variant="innovative"
           />
+        </div>
 
-          {/* Infinite Scroll Loader - Solo para vista normal */}
-          {!isShowingSearchResults && hasNextPage && (
-            <div ref={loadingRef} className="py-8">
-              <InfiniteScrollLoader 
-                isLoading={isLoading}
-                hasNextPage={hasNextPage}
-              />
+        {/* Infinite scroll loader */}
+        {hasNextPage && !isShowingSearchResults && (
+          <div ref={loadingRef} className="flex justify-center py-6">
+            <InfiniteScrollLoader
+              isLoading={isLoading}
+              hasNextPage={hasNextPage}
+            />
+          </div>
+        )}
+
+        {/* Empty state para búsqueda */}
+        {isShowingSearchResults &&
+          searchResults.length === 0 &&
+          !isSearching && (
+            <div className="text-center py-12">
+              <div className="mx-auto h-20 w-20 rounded-full bg-muted/80 backdrop-blur-sm flex items-center justify-center mb-4">
+                <Search className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2">Sin resultados</h3>
+              <p className="text-muted-foreground mb-4 max-w-sm mx-auto">
+                No encontramos personajes que coincidan con tu búsqueda. Intenta
+                con otros términos.
+              </p>
+              <button
+                onClick={handleClearSearch}
+                className="inline-flex items-center px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-accent transition-colors"
+              >
+                Ver todos los personajes
+              </button>
             </div>
           )}
-        </div>
-      </section>
+    </div>
 
       {/* Modal de personaje */}
       <CharacterModal
         isOpen={isModalOpen}
         character={modalCharacter}
-        isLoading={isLoadingDetail}
         onClose={closeModal}
+        isLoading={isLoadingDetail}
         aiDescription={modalAiDescription}
         isGeneratingAI={modalIsGeneratingAI}
         onGenerateAI={modalHandleGenerateAI}

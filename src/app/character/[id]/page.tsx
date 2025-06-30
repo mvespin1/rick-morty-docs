@@ -1,7 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { CharacterDetail } from '@/components/character/character-detail';
 import { CharacterNavigation } from '@/components/layout/navigation';
 import { PageLoader } from '@/components/common/loading-spinner';
@@ -14,6 +14,7 @@ export default function CharacterDetailPage() {
   const params = useParams();
   const router = useRouter();
   
+  // Parsing más robusto del ID
   const rawId = params.id;
   let characterId: number;
   
@@ -24,21 +25,8 @@ export default function CharacterDetailPage() {
   } else {
     characterId = NaN;
   }
-
-  const {
-    character,
-    isLoading,
-    error,
-    navigation
-  } = useCharacterDetail(characterId);
-
-  const {
-    description,
-    isGenerating,
-    generate
-  } = useAIDescription(character?.id || null);
   
-  // Si el ID no es válido, mostrar error
+  // Si el ID no es válido, redirigir a home
   if (isNaN(characterId) || characterId < 1 || characterId > 826) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
@@ -46,12 +34,10 @@ export default function CharacterDetailPage() {
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <Image
+            <img
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
-              fill
-              className="object-cover object-center scale-110 blur-[0.5px]"
-              priority
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -65,6 +51,20 @@ export default function CharacterDetailPage() {
       </main>
     );
   }
+
+  const {
+    character,
+    isLoading,
+    error,
+    refresh,
+    navigation
+  } = useCharacterDetail(characterId);
+
+  const {
+    description,
+    isGenerating,
+    generate
+  } = useAIDescription(character?.id || null);
 
   // Manejar navegación
   const handleGoBack = () => {
@@ -98,12 +98,10 @@ export default function CharacterDetailPage() {
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <Image
+            <img
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
-              fill
-              className="object-cover object-center scale-110 blur-[0.5px]"
-              priority
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -122,12 +120,10 @@ export default function CharacterDetailPage() {
         <div className="fixed inset-0 z-0">
           <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
           <div className="absolute inset-0 flex items-center justify-center opacity-25">
-            <Image
+            <img
               src="/rick-morty-hero.jpg"
               alt="Rick and Morty"
-              fill
-              className="object-cover object-center scale-110 blur-[0.5px]"
-              priority
+              className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
@@ -148,12 +144,10 @@ export default function CharacterDetailPage() {
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-grid-black/[0.02] bg-[size:60px_60px]" />
         <div className="absolute inset-0 flex items-center justify-center opacity-25">
-          <Image
+          <img
             src="/rick-morty-hero.jpg"
             alt="Rick and Morty"
-            fill
-            className="object-cover object-center scale-110 blur-[0.5px]"
-            priority
+            className="w-full h-full object-cover object-center scale-110 blur-[0.5px]"
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background/80" />
