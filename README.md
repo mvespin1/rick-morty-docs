@@ -137,7 +137,7 @@ npm >= 8.0.0
 ### Instalación
 ```bash
 # 1. Clonar el repositorio
-git clone [url-del-repositorio]
+git clone https://github.com/mvespin1/rick-morty-docs.git
 cd rick-morty-docs
 
 # 2. Instalar dependencias
