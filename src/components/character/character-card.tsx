@@ -4,6 +4,7 @@
 'use client';
 
 import { MouseEvent } from 'react';
+import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import type { Character } from '@/types/api';
@@ -65,9 +66,11 @@ export function CharacterCard({
     >
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden">
-        <img
+        <Image
           src={character.image}
           alt={character.name}
+          width={300}
+          height={300}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           loading="lazy"
         />
@@ -190,9 +193,11 @@ export function CompactCharacterCard({
       )}
     >
       <div className="relative">
-        <img
+        <Image
           src={character.image}
           alt={character.name}
+          width={64}
+          height={64}
           className="w-16 h-16 rounded-full object-cover ring-2 ring-border"
         />
         <div className="absolute -bottom-1 -right-1">
