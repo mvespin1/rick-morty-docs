@@ -30,7 +30,7 @@ export const useSearch = () => {
       setSelectedId(id);
       await searchById(id);
       showSuccess(`Personaje ${id} encontrado`);
-    } catch (error) {
+    } catch (_) {
       showError('Personaje no encontrado', `No existe el personaje con ID ${id}`);
     }
   }, [searchById, setSelectedId, showSuccess, showError]);

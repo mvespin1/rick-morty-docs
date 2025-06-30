@@ -44,7 +44,7 @@ export const useCharacters = () => {
     
     try {
       await loadMoreCharacters();
-    } catch (err) {
+    } catch {
       showError('Error al cargar más personajes');
     }
   }, [hasNextPage, isLoading, loadMoreCharacters, showError]);
@@ -59,7 +59,7 @@ export const useCharacters = () => {
       if (filterCount > 0) {
         showSuccess(`Filtros aplicados (${filterCount})`);
       }
-    } catch (err) {
+    } catch {
       showError('Error al aplicar filtros');
     }
   }, [searchCharacters, setFilters, showSuccess, showError]);
@@ -71,7 +71,7 @@ export const useCharacters = () => {
       setFilters({});
       await fetchCharacters(1);
       showSuccess('Filtros eliminados');
-    } catch (err) {
+    } catch {
       showError('Error al limpiar filtros');
     }
   }, [fetchCharacters, setFilters, resetCharacters, showSuccess, showError]);
@@ -82,7 +82,7 @@ export const useCharacters = () => {
       resetCharacters();
       await fetchCharacters(1);
       showSuccess('Lista actualizada');
-    } catch (_) {
+    } catch {
       showError('Error al actualizar');
     }
   }, [fetchCharacters, resetCharacters, showSuccess, showError]);

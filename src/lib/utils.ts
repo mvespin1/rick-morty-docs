@@ -100,7 +100,7 @@ export function cleanSearchText(text: string): string {
 }
 
 // Formatear JSON para mostrar
-export function formatJSON(obj: any): string {
+export function formatJSON(obj: Record<string, unknown>): string {
   return JSON.stringify(obj, null, 2);
 }
 

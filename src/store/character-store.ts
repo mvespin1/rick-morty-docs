@@ -219,9 +219,9 @@ export const useCharacterStore = create<CharacterStore>()(
           
           return character;
           
-        } catch (error) {
+        } catch (err) {
           set({
-            error: formatApiError(error),
+            error: formatApiError(err),
             isLoading: false,
             character: null,
           });
@@ -261,9 +261,9 @@ export const useCharacterStore = create<CharacterStore>()(
             lastSearchId: null,
           });
           
-        } catch (error) {
+        } catch (err) {
           set({
-            error: formatApiError(error),
+            error: formatApiError(err),
             isSearching: false,
             hasSearched: true,
             results: [],
@@ -290,9 +290,9 @@ export const useCharacterStore = create<CharacterStore>()(
             query: '',
           });
           
-        } catch (error) {
+        } catch (err) {
           set({
-            error: formatApiError(error),
+            error: formatApiError(err),
             isSearching: false,
             hasSearched: true,
             results: [],
@@ -336,7 +336,7 @@ export const useCharacterStore = create<CharacterStore>()(
             error: null,
           });
           
-        } catch (error) {
+        } catch {
           console.warn('Error generando descripción con IA, el servicio no está disponible');
           
           // Si el servicio falla completamente, mostrar mensaje de configuración

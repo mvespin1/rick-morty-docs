@@ -3,7 +3,7 @@
 
 // Utilidades para servicios de API
 import { extractIdFromUrl, isValidCharacterId } from '@/lib/utils';
-import type { Character, Episode } from '@/types/api';
+import type { Character } from '@/types/api';
 
 /**
  * Extraer IDs de episodios de un personaje
@@ -25,19 +25,23 @@ export function extractLocationId(locationUrl: string): number | null {
 /**
  * Validar datos de personaje recibidos de la API
  */
-export function validateCharacterData(data: any): data is Character {
+export function validateCharacterData(data: unknown): data is Character {
+  if (typeof data !== 'object' || data === null) return false;
+  
+  const obj = data as Record<string, unknown>;
+  
   return (
-    typeof data === 'object' &&
-    data !== null &&
-    typeof data.id === 'number' &&
-    isValidCharacterId(data.id) &&
-    typeof data.name === 'string' &&
-    data.name.length > 0 &&
-    ['Alive', 'Dead', 'unknown'].includes(data.status) &&
-    typeof data.species === 'string' &&
-    ['Female', 'Male', 'Genderless', 'unknown'].includes(data.gender) &&
-    typeof data.image === 'string' &&
-    Array.isArray(data.episode)
+    typeof obj.id === 'number' &&
+    isValidCharacterId(obj.id) &&
+    typeof obj.name === 'string' &&
+    obj.name.length > 0 &&
+    typeof obj.status === 'string' &&
+    ['Alive', 'Dead', 'unknown'].includes(obj.status) &&
+    typeof obj.species === 'string' &&
+    typeof obj.gender === 'string' &&
+    ['Female', 'Male', 'Genderless', 'unknown'].includes(obj.gender) &&
+    typeof obj.image === 'string' &&
+    Array.isArray(obj.episode)
   );
 }
 
@@ -93,7 +97,7 @@ function getGenderInSpanish(gender: Character['gender']): string {
 /**
  * Construir parámetros de query string
  */
-export function buildQueryParams(params: Record<string, any>): string {
+export function buildQueryParams(params: Record<string, unknown>): string {
   const searchParams = new URLSearchParams();
   
   Object.entries(params).forEach(([key, value]) => {
@@ -122,7 +126,7 @@ export function parseQueryParams(queryString: string): Record<string, string> {
 /**
  * Generar hash simple para caché
  */
-export function generateCacheKey(prefix: string, params: any): string {
+export function generateCacheKey(prefix: string, params: unknown): string {
   const paramsString = JSON.stringify(params);
   const hash = btoa(paramsString).replace(/[+=\/]/g, '').substring(0, 8);
   return `${prefix}_${hash}`;
@@ -140,16 +144,16 @@ export function isCacheValid(timestamp: number, ttlMinutes = 5): boolean {
 /**
  * Formatear error de API para mostrar al usuario
  */
-export function formatApiError(error: any): string {
+export function formatApiError(error: unknown): string {
   if (typeof error === 'string') {
     return error;
   }
   
-  if (error?.message) {
+  if (error && typeof error === 'object' && 'message' in error && typeof error.message === 'string') {
     return error.message;
   }
   
-  if (error?.statusCode === 404) {
+  if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 404) {
     return 'Personaje no encontrado';
   }
   

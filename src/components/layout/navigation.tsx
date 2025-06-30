@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronRight, Home, User, ArrowLeft } from 'lucide-react';
+import { ChevronRight, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BreadcrumbItem {
@@ -194,8 +194,6 @@ export function MiniNavigation({
 
 // Hook personalizado para generar breadcrumbs automáticamente
 export function useBreadcrumbs() {
-  const router = useRouter();
-  
   // Esta función podría expandirse para generar breadcrumbs basados en la ruta actual
   const generateBreadcrumbs = (pathname: string): BreadcrumbItem[] => {
     const segments = pathname.split('/').filter(Boolean);

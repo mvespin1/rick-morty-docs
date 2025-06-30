@@ -33,7 +33,7 @@ export const useCharacterModal = () => {
       try {
         const fullCharacter = await fetchCharacterById(character.id);
         setSelectedCharacter(fullCharacter || character);
-      } catch (_) {
+      } catch {
         // Error manejado por el store
       } finally {
         setIsLoadingDetail(false);
@@ -56,7 +56,7 @@ export const useCharacterModal = () => {
     try {
       await generateAIDescription(selectedCharacter);
       showSuccess('Descripción generada con IA');
-    } catch (_) {
+    } catch {
       // Error manejado por el store
     }
   }, [selectedCharacter, generateAIDescription, showSuccess]);
@@ -71,7 +71,7 @@ export const useCharacterModal = () => {
       if (character) {
         setSelectedCharacter(character);
       }
-    } catch (_) {
+    } catch {
       showError(`Error al cargar personaje ${id}`);
     } finally {
       setIsLoadingDetail(false);

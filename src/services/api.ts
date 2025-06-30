@@ -106,17 +106,17 @@ class ApiClient {
   }
 
   // Métodos públicos para realizar peticiones
-  public async get<T>(url: string, params?: Record<string, any>): Promise<T> {
+  public async get<T>(url: string, params?: Record<string, unknown>): Promise<T> {
     const response = await this.instance.get<T>(url, { params });
     return response.data;
   }
 
-  public async post<T>(url: string, data?: any): Promise<T> {
+  public async post<T>(url: string, data?: unknown): Promise<T> {
     const response = await this.instance.post<T>(url, data);
     return response.data;
   }
 
-  public async put<T>(url: string, data?: any): Promise<T> {
+  public async put<T>(url: string, data?: unknown): Promise<T> {
     const response = await this.instance.put<T>(url, data);
     return response.data;
   }
