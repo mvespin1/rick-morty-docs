@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { CharacterDetail } from '@/components/character/character-detail';
@@ -12,13 +13,21 @@ import Image from 'next/image';
 export default function CharacterDetailPage({ 
   params 
 }: { 
-  params: Promise<{ id: string }> | { id: string }
+  params: Promise<{ id: string }>
 }) {
   const router = useRouter();
   
-  // Resolver params si es una Promise (Next.js 15)
-  const resolvedParams = params instanceof Promise ? { id: '' } : params;
-  const characterId = parseInt(resolvedParams.id);
+  // En Next.js 15, params es siempre una Promise
+  const [characterId, setCharacterId] = useState<number>(0);
+  
+  useEffect(() => {
+    const resolveParams = async () => {
+      const resolvedParams = await params;
+      const id = parseInt(resolvedParams.id);
+      setCharacterId(id);
+    };
+    resolveParams();
+  }, [params]);
 
   // Hooks SIEMPRE se llaman primero, sin condiciones
   const {
@@ -34,8 +43,8 @@ export default function CharacterDetailPage({
     generate
   } = useAIDescription(character?.id || null);
 
-  // Validar ID después de los hooks
-  if (isNaN(characterId) || characterId < 1) {
+  // Validar ID después de los hooks (solo cuando está resuelto)
+  if (characterId !== 0 && (isNaN(characterId) || characterId < 1)) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
         <div className="fixed inset-0 z-0">
@@ -87,7 +96,7 @@ export default function CharacterDetailPage({
   };
 
   // Estados de carga y error
-  if (isLoading) {
+  if (characterId === 0 || isLoading) {
     return (
       <main className="min-h-screen bg-background pt-20 relative">
         <div className="fixed inset-0 z-0">
