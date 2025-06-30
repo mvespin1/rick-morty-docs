@@ -4,7 +4,7 @@
 Una aplicación moderna de documentación interactiva para la API de Rick and Morty con integración de IA generativa usando Google Gemini. Desarrollada como prueba técnica para demostrar capacidades en desarrollo web moderno, arquitectura escalable y creatividad en UX/UI.
 
 ## Demo
-- **Link**:
+- **Link**: https://rick-morty-docs.vercel.app
 
 ## Características Principales
 
