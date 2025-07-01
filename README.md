@@ -6,6 +6,11 @@ Una aplicación moderna de documentación interactiva para la API de Rick and Mo
 ## Demo
 - **Link**: https://rick-morty-docs.vercel.app
 
+- **CodeSandbox**: https://codesandbox.io/p/github/mvespin1/rick-morty-docs/master 
+(Si se va a ejecutar el proyecto desde la terminal, se recomienda hacerlo en el puerto 3000)
+
+- **Link de Despliegue - CodeSandbox**: https://j6dsg9-3000.csb.app/
+
 ## Características Principales
 
 ### Funcionalidades
